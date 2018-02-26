@@ -1,0 +1,29 @@
+<?php
+
+$lang['StereoZoom'] = 'Stéréo Zoom';
+$lang['What StereoZoom can do for me?'] = 'À quoi va me servir Stéréo Zoom ?';
+
+// config.tpl
+$lang['How to detect stereogram picture?'] = 'Comment détecter les stéréogrammes ?';
+$lang['Normal picture filename: sample.jpg or 20180101T123059_dscn9876.jpg'] = 'Nom de fichier d\'une image normale : example.jpg ou 20180101T123059_dscn9876.jpg';
+$lang['Stereogram picture filename: sample%s%s%s.jpg or 20180101T123059_dscn9876%s%s%s.jpg'] = 'Nom de fichier d\'une image stéréogramme : example%s%s%s.jpg ou 20180101T123059_dscn9876%s%s%s.jpg';
+$lang['Stereogram detection'] = 'Détection de stéréogramme';
+$lang['Define your suffix:'] = 'Définir votre suffixe';
+$lang['for instance: _rl, -lr, stereo, ...'] = 'examples : _dg, -gd, stereo, ...';
+$lang['a possible dash followed by from 2 to 6 characters'] = 'un éventuel tiret suivi de 2 à 6 caractères';
+$lang['Save Settings'] = 'Enregistrer les paramétrages';
+
+
+// picture_sz100.tpl
+$lang['Zoom 100% / Zoom Fit&#013;[Z] key'] = 'Zoom 100% / Zoom Fit&#013;touche [Z]';
+$lang['Full screen&#013;[F] key'] = 'Plein écran&#013;touche [F]';
+$lang['Switch right and left views&#013;[X] key'] = 'Inversion vues gauche et droite&#013;touche [X]';
+$lang['Déplacement : both views are displaced with the mouse&#013;Ajustement : a single view is displaced with the mouse&#013;[Ctrl] key + mouse'] = 'Déplacement : les deux vues se déplacent à la souris&#013;Ajustement : une seule vue se déplace avec la souris&#013;touche [Ctrl] + Souris';
+
+$lang['click : previous'] = 'clic : pr&eacute;c&eacute;dente';
+$lang['click : next'] = 'clic : suivante';
+$lang['drag : move&#013;double click : previous'] = 'drag : déplace&#013;double clic : précédente';
+$lang['drag : move&#013;doucle click : next'] = 'drag : déplace&#013;doucle clic : suivante';
+
+
+// $lang[''] = '';

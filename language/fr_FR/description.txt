@@ -1,0 +1,1 @@
+Gestion de l'affichage d'un stéréogramme au format jpeg (paire de vues jointes côte à côte), vision croisée ou parallèle, vue générale ou zoom 100%, navigation dans le zoom.

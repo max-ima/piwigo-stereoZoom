@@ -1,0 +1,23 @@
+em {
+	font-weight: bold;
+}
+
+span.pre {
+	font-family: monospace;
+}
+
+dl dt,
+dl dd {
+	display: block;
+	margin: 1em;
+}
+dl dt {
+	margin-bottom: 0em;
+}
+dl dd {
+	margin-top: 0em;
+	margin-left: 2em;
+}
+dl dt {
+	font-weight: bold;
+}
