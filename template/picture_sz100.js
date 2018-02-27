@@ -9,8 +9,8 @@
 	
 	
 // variables qui seront définies dans le corps du template associé
-// var imgrelpath='{$current.selected_derivative->get_url()}'; 
-// var imgpath='{$STEREOZOOM_IMG_PATH}';
+// var imgDerivPath='{$current.selected_derivative->get_url()}'; 
+// var imgOrigPath='{$STEREOZOOM_IMG_PATH}';
 	
 	// Initialisation de l'interface, liens/boutons de changement de mode
 	window.onload = function(){
@@ -222,10 +222,38 @@
 		
 	}
 	
+	Image.prototype.load = function(url){
+        var thisImg = this;
+		var SIimg = setInterval(function() {
+			console.log(thisImg.completedPercentage+' %')
+			document.getElementById('z_vue_droite').textContent=thisImg.completedPercentage+' % '
+			document.getElementById('z_vue_gauche').textContent=' '+thisImg.completedPercentage+' %'
+		}, 100);
+        var xmlHTTP = new XMLHttpRequest();
+        xmlHTTP.open('GET', url,true);
+        xmlHTTP.responseType = 'arraybuffer';
+        xmlHTTP.onload = function(e) {
+            var blob = new Blob([this.response]);
+            thisImg.src = window.URL.createObjectURL(blob);
+            clearInterval(SIimg);
+			document.getElementById('z_vue_droite').textContent=''
+			document.getElementById('z_vue_gauche').textContent=''
+        };
+        xmlHTTP.onprogress = function(e) {
+            thisImg.completedPercentage = parseInt((e.loaded / e.total) * 100);
+        };
+        xmlHTTP.onloadstart = function() {
+            thisImg.completedPercentage = 0;
+        };
+        xmlHTTP.send();
+    };
+
+    Image.prototype.completedPercentage = 0;
 	
-	// Zoom100% : Image originale (résolution maximale) chargement en mémoire et affichage
-	var monImage=new Image();
-	monImage.onload = function() {
+	
+	// ZoomFit : Image representative (résolution basse) chargement en mémoire et affichage
+	var szFitImage=new Image();
+	szFitImage.onload = function() {
 		draw(this);
 		handleFullscreen()
 	};
@@ -243,8 +271,8 @@
 	}
 	function charge_image_derivative()
 	{
-		uri = encodeURI(imgrelpath) ;
-		monImage.src=uri;
+		uri = encodeURI(imgDerivPath) ;
+		szFitImage.src=uri;
 	}
 	
 		
@@ -253,7 +281,7 @@
 	function handleFullscreen() {
 		if (!isZoom100) {
 			if (isFullScreen) {
-				if (monImage.width/monImage.height > window.innerWidth/window.innerHeight) {
+				if (szFitImage.width/szFitImage.height > window.innerWidth/window.innerHeight) {
 					document.getElementById('lunettes').style.overflowY='visible';
 					
 					document.getElementById('yeux').style.marginTop='50vh';
@@ -278,7 +306,7 @@
 	
 	//  Zoom100% : Gestion du déplacement 
 		
-		var imageTest;
+		var sz100Image;
 		var SI1, SI2;
 		var x, y ;
 		var etat = 1 ;
@@ -358,10 +386,12 @@
 			}
 			
 			
-			var imageSrc = document.getElementById('z_vue_droite').style.backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
-			var imageTest = new Image();
-			imageTest.src = imageSrc;
-			imageTest.onload = function () {
+			var imgOrigUrl = document.getElementById('z_vue_droite').style.backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
+			var sz100Image = new Image();
+// 			sz100Image.src = imgOrigUrl;
+			sz100Image.load(imgOrigUrl);
+			
+			sz100Image.onload = function () {
 				X1 = -this.width/4;
 				Y1 = -this.height/2;    
 
@@ -427,7 +457,7 @@
 		}
 		function charge_image()
 		{
-			uri = encodeURI(imgpath) ;
+			uri = encodeURI(imgOrigPath) ;
 // 			alert('!!'+uri);
 			document.getElementById('z_vue_droite').style.backgroundImage = 'url('+uri+')' ;
 			document.getElementById('z_vue_gauche').style.backgroundImage = 'url('+uri+')' ;

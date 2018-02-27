@@ -20,8 +20,8 @@
 	
 	<div id="zoom"><div id="z_yeux"><div id="z_vue_droite" title="{'drag : move&#013;double click : previous'|translate}" ></div><div id="z_vue_gauche" title="{'drag : move&#013;double click : next'|translate}" ></div></div></div>
 <script type="text/javascript">
-var imgrelpath='{$current.selected_derivative->get_url()}';
-var imgpath='{$STEREOZOOM_IMG_PATH}';
+var imgDerivPath='{$current.selected_derivative->get_url()}';
+var imgOrigPath='{$STEREOZOOM_IMG_PATH}';
 var isForCrossView={$stereoZoom.isForCrossView};
 </script>
 
