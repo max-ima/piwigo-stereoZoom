@@ -4,7 +4,7 @@
 	var hasTouchscreen = 'ontouchstart' in window; // roughly detect all mobile devices (I want device without keyboard, without escape key)
 	var isFullScreen = false // L'image stéréo est en plein écran, sinon est dans le corps de page
 	var isZoom100_default = false // L'image stéréo est en mode zoom 100% (un pixel image par pixel écran), sinon en mode vue générale
-	var isCrossView_default = true // Le stéréogramme est en vison croisée, écrasé par la suite par $stereoZoom.isCrossView
+	var isForCrossView = true // Le stéréogramme est monté en vison croisée, écrasé par la suite par $stereoZoom.isForCrossView
 	var isFullWindow_default = false // Le stéréogramme est en pleine fenêtre
 	
 	
@@ -207,7 +207,7 @@
 		document.getElementById('toggleZoom').click()
 		
 		isCrossView=eval(document.cookie.replace(/(?:(?:^|.*;\s*)stereoZoom_isCrossView\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
-		if(typeof isCrossView === 'undefined') isCrossView = isCrossView_default
+		if(typeof isCrossView === 'undefined') isCrossView = isForCrossView
 		isCrossView=!isCrossView
 		document.getElementById('toggleView').click()
 				
@@ -230,8 +230,8 @@
 		handleFullscreen()
 	};
 	function draw(img) {
-		var cv1 = document.getElementById((isCrossView_default)?'vue_droite':'vue_gauche');
-		var cv2 = document.getElementById((isCrossView_default)?'vue_gauche':'vue_droite');
+		var cv1 = document.getElementById((isForCrossView)?'vue_droite':'vue_gauche');
+		var cv2 = document.getElementById((isForCrossView)?'vue_gauche':'vue_droite');
 		// canvas à la taille de l'image (pour chaque vue)
 		cv1.width=cv2.width=img.width/2;
 		cv1.height=cv2.height=img.height;
@@ -400,8 +400,8 @@
 					break;
 				}
 			}         
-			document.getElementById((isCrossView_default)?'z_vue_droite':'z_vue_gauche').style.backgroundPosition = x1+'px '+y1+'px' ;
-			document.getElementById((isCrossView_default)?'z_vue_gauche':'z_vue_droite').style.backgroundPosition = x2+'px '+y2+'px' ;  
+			document.getElementById((isForCrossView)?'z_vue_droite':'z_vue_gauche').style.backgroundPosition = x1+'px '+y1+'px' ;
+			document.getElementById((isForCrossView)?'z_vue_gauche':'z_vue_droite').style.backgroundPosition = x2+'px '+y2+'px' ;  
 		}
 		function change_synchro(val)
 		{

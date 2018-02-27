@@ -10,7 +10,8 @@ class stereoZoom_maintain extends PluginMaintain
 {
 	private $default_conf = array(
 		'suffix' => '_stereo',
-		'tag' => 'stereo', // todo ?
+		'isForCrossView' => 'true',
+// 		'tag' => 'stereo', // todo ?
 	);
 
 	private $table;
@@ -42,6 +43,11 @@ class stereoZoom_maintain extends PluginMaintain
 		{
 			$old_conf = safe_unserialize($conf['stereoZoom']);
 
+			if (empty($old_conf['isForCrossView']))
+			{ // use case: this parameter was added in version 1.1.0
+				$old_conf['isForCrossView'] = $this->default_conf['isForCrossView'];
+			}
+			
 			conf_update_param('stereoZoom', $old_conf, true);
 		}
 	}

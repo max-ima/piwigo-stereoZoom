@@ -11,8 +11,10 @@ $lang['Stereogram detection'] = 'Détection de stéréogramme';
 $lang['Define your suffix:'] = 'Définir votre suffixe';
 $lang['for instance: _rl, -lr, stereo, ...'] = 'examples : _dg, -gd, stereo, ...';
 $lang['a possible dash followed by from 2 to 6 characters'] = 'un éventuel tiret suivi de 2 à 6 caractères';
+$lang['Stereogram view type'] = 'Type de vision des stéréogrammes';
+$lang['Cross view'] = 'Vision croisée';
+$lang['Parallel view'] = 'Vision parallèle';
 $lang['Save Settings'] = 'Enregistrer les paramétrages';
-
 
 // picture_sz100.tpl
 $lang['Zoom 100% / Zoom Fit&#013;[Z] key'] = 'Zoom 100% / Zoom Fit&#013;touche [Z]';

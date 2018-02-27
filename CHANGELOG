@@ -3,6 +3,8 @@ Changes from v1.0.0 to v1.1.0
 - Add another view mode, stereogram in fullwindow (combined with browser fullscreen [F11], it is close to stereogram in fullscreen)
 - Add cookies to remember stereogram zoom, view mode, fullscreen, fullwindow settings
 - Add doubleclick event capture on stereogram to go either forward or backward in pictures list
+- Documentation amendment
+- Translation
 
 Initial Release v1.0.0
 - Initial release

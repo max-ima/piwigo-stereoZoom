@@ -22,7 +22,7 @@
 <script type="text/javascript">
 var imgrelpath='{$current.selected_derivative->get_url()}';
 var imgpath='{$STEREOZOOM_IMG_PATH}';
-var isCrossView_default={$stereoZoom.isCrossView};
+var isForCrossView={$stereoZoom.isForCrossView};
 </script>
 
 

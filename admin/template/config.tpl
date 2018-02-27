@@ -39,13 +39,13 @@ jQuery(".showInfo").tipTip({
 <fieldset>
 	<legend>{'Stereogram view type'|translate}</legend>
     <label>
-	   <input type="radio" name="STEREOZOOMPLUGIN_VAR_ISCROSSVIEW" value="true" {if ('true'== $stereoZoom.isCrossView)}checked="checked"{/if} />
-	   {'Cross view:'|translate}
+	   <input type="radio" name="STEREOZOOMPLUGIN_VAR_ISFORCROSSVIEW" value="true" {if ('true'== $stereoZoom.isForCrossView)}checked="checked"{/if} />
+	   {'Cross view'|translate}
     </label>
     <br />
     <label>
-	   <input type="radio" name="STEREOZOOMPLUGIN_VAR_ISCROSSVIEW" value="false" {if ('false'== $stereoZoom.isCrossView)}checked="checked"{/if} />
-	   {'Parallel view:'|translate}
+	   <input type="radio" name="STEREOZOOMPLUGIN_VAR_ISFORCROSSVIEW" value="false" {if ('false'== $stereoZoom.isForCrossView)}checked="checked"{/if} />
+	   {'Parallel view'|translate}
     </label>
 </fieldset>
  
