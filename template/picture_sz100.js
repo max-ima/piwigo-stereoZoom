@@ -1,19 +1,34 @@
-
+// TODO : unifier lunettes et z_yeux pour toggleZoom en fullscreen
 
 	var formAffiche = true  // Affichage du formulaire
+	var hasTouchscreen = 'ontouchstart' in window; // roughly detect all mobile devices (I want device without keyboard, without escape key)
 	var isFullScreen = false // L'image stéréo est en plein écran, sinon est dans le corps de page
-	var isZoom100 = true // L'image stéréo est en mode zoom 100% (un pixel image par pixel écran), sinon en mode vue générale
+	var isZoom100_default = false // L'image stéréo est en mode zoom 100% (un pixel image par pixel écran), sinon en mode vue générale
+	var isCrossView_default = true // Le stéréogramme est en vison croisée, écrasé par la suite par $stereoZoom.isCrossView
+	var isFullWindow_default = false // Le stéréogramme est en pleine fenêtre
+	
+	
+// variables qui seront définies dans le corps du template associé
+// var imgrelpath='{$current.selected_derivative->get_url()}'; 
+// var imgpath='{$STEREOZOOM_IMG_PATH}';
 	
 	// Initialisation de l'interface, liens/boutons de changement de mode
 	window.onload = function(){
+// 		console.log(document.cookie)
+		
+		if(hasTouchscreen) document.getElementById('toggleFullwindow').parentNode.style.display = 'none'
+
+		
 		document.getElementById('toggleZoom').onclick = function() {
 			isZoom100=!isZoom100
+			document.cookie = 'stereoZoom_isZoom100='+isZoom100+'; max-age='+60*60*24*7;
+// 			console.log(document.cookie)
 			
 			zoomFit = document.getElementById('lunettes');
 			zoom100 = document.getElementById('z_yeux');
 			moveMode = document.getElementById('toggleDA').parentNode;
 			
-			if (isFullScreen) document.getElementById('toggleFullscreen').click()
+// 			if (isFullScreen) document.getElementById('toggleFullscreen').click()
 				
 			obj = document.getElementById('toggleZoom')
 			if(isZoom100) {
@@ -31,24 +46,93 @@
 			
 			return false
 		}
-		document.getElementById('toggleLP').onclick = function() {
-			mesYeux = document.getElementById('yeux');
-			mesYeux.insertBefore(mesYeux.firstChild, null); // met le premier en dernier
+		document.getElementById('toggleView').onclick = function() {
+			isCrossView = !isCrossView
+			document.cookie = 'stereoZoom_isCrossView='+isCrossView+'; max-age='+60*60*24*7;
+// 			console.log(document.cookie)
 			
-			mesYeux = document.getElementById('z_yeux');
-			mesYeux.insertBefore(mesYeux.firstChild, null); // met le premier en dernier
-			
-			obj = document.getElementById('toggleLP')
-			if(obj.textContent=='Vision parallèle') {
+			obj = document.getElementById('toggleView')
+// 			isCrossView = !(obj.textContent=='Vision parallèle')
+			if(isCrossView) {
 				obj.textContent='Vision croisée'
+				mesYeux = document.getElementById('yeux');
+	// 			mesYeux.insertBefore(mesYeux.firstChild, null); // met le premier en dernier
+				mesYeux.insertBefore(document.getElementById('vue_gauche'), null); // met la vue gauche en dernier
+				
+				mesYeux = document.getElementById('z_yeux');
+	// 			mesYeux.insertBefore(mesYeux.firstChild, null); // met le premier en dernier
+				mesYeux.insertBefore(document.getElementById('z_vue_gauche'), null); // met la vue gauche en dernier
 			}
 			else {
 				obj.textContent='Vision parallèle'
+				mesYeux = document.getElementById('yeux');
+	// 			mesYeux.insertBefore(mesYeux.firstChild, null); // met le premier en dernier
+				mesYeux.insertBefore(document.getElementById('vue_droite'), null); // met la vue gauche en dernier
+				
+				mesYeux = document.getElementById('z_yeux');
+	// 			mesYeux.insertBefore(mesYeux.firstChild, null); // met le premier en dernier
+				mesYeux.insertBefore(document.getElementById('z_vue_droite'), null); // met la vue gauche en dernier
+			}
+			return false
+		}
+		document.getElementById('toggleFullwindow').onclick = function() {
+			if (!hasTouchscreen) {
+			isFullWindow=!isFullWindow
+			document.cookie = 'stereoZoom_isFullWindow='+isFullWindow+'; max-age='+60*60*24*7;
+// 			console.log(document.cookie)
+			
+			zoomFit = document.getElementById('lunettes');
+			zoom100 = document.getElementById('z_yeux');
+			
+				
+			obj = document.getElementById('toggleFullwindow')
+			if(isFullWindow) {
+				// les deux modes sont rendus exclusifs l'un de l'autre
+				if (isFullScreen) document.getElementById('toggleFullscreen').click();
+					
+				zoomFit.style.width = '100%' ;
+				zoomFit.style.height = '100vh' ;
+				zoomFit.style.position = 'fixed' ;
+				zoomFit.style.left = '0px' ;
+				zoomFit.style.top = '0px' ;
+				zoomFit.style.margin = '0px' ;
+				zoomFit.style.zIndex = '101' ;
+				
+				zoom100.style.width = '100%' ;
+				zoom100.style.height = '100vh' ;
+				zoom100.style.position = 'fixed' ;
+				zoom100.style.left = '0px' ;
+				zoom100.style.top = '0px' ;
+				zoom100.style.margin = '0px' ;
+				zoom100.style.zIndex = '101' ;
+				
+				obj.textContent='W full'
+			}
+			else {
+				zoomFit.style.width = '' ;
+				zoomFit.style.height = '' ;
+				zoomFit.style.position = '' ;
+				zoomFit.style.left = '' ;
+				zoomFit.style.top = '' ;
+				zoomFit.style.margin = '' ;
+				zoomFit.style.zIndex = '' ;
+				
+				zoom100.style.width = '' ;
+				zoom100.style.height = '' ;
+				zoom100.style.position = '' ;
+				zoom100.style.left = '' ;
+				zoom100.style.top = '' ;
+				zoom100.style.margin = '' ;
+				zoom100.style.zIndex = '' ;
+				
+				obj.textContent='W'
+			}
 			}
 			return false
 		}
 		document.getElementById('toggleFullscreen').onclick = function() {
 			var elem = document.getElementById((isZoom100)?'z_yeux':'lunettes');
+// 			console.log(elem)
 			if (isFullScreen) {
 // 				document.exitFullscreeddn();
 // 				elem.exitFullscreen();
@@ -96,10 +180,43 @@
 		}
 		document.onwebkitfullscreenchange = document.onmozfullscreenchange = document.onfullscreenchange = function( event ) {
 			isFullScreen=!isFullScreen
+// 			document.cookie = 'stereoZoom_isFullScreen='+isFullScreen+'; max-age='+0;
+//  			console.log(document.cookie)
+
+			if (isFullScreen) {
+				// les deux modes sont rendus exclusifs l'un de l'autre
+				if(isFullWindow) document.getElementById('toggleFullwindow').click();
+			}
 			handleFullscreen()
 		};
 		
+		document.getElementById('vue_droite').ondblclick = 
+		document.getElementById('z_vue_droite').ondblclick = function() {
+			document.getElementById('linkPrev').click()
+			return false
+		}
+		document.getElementById('vue_gauche').ondblclick = 
+		document.getElementById('z_vue_gauche').ondblclick = function() {
+			document.getElementById('linkNext').click()
+			return false
+		}
+		
+		isZoom100=eval(document.cookie.replace(/(?:(?:^|.*;\s*)stereoZoom_isZoom100\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
+		if(typeof isZoom100 === 'undefined') isZoom100 = isZoom100_default
+		isZoom100=!isZoom100
 		document.getElementById('toggleZoom').click()
+		
+		isCrossView=eval(document.cookie.replace(/(?:(?:^|.*;\s*)stereoZoom_isCrossView\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
+		if(typeof isCrossView === 'undefined') isCrossView = isCrossView_default
+		isCrossView=!isCrossView
+		document.getElementById('toggleView').click()
+				
+		isFullWindow=eval(document.cookie.replace(/(?:(?:^|.*;\s*)stereoZoom_isFullWindow\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
+		if(typeof isFullWindow === 'undefined' || hasTouchscreen) isFullWindow = isFullWindow_default
+		isFullWindow=!isFullWindow
+		document.getElementById('toggleFullwindow').click()
+		
+		
 		charge_image_derivative();
 		charge_image();
 		
@@ -113,8 +230,8 @@
 		handleFullscreen()
 	};
 	function draw(img) {
-		var cv1 = document.getElementById('vue_droite');
-		var cv2 = document.getElementById('vue_gauche');
+		var cv1 = document.getElementById((isCrossView_default)?'vue_droite':'vue_gauche');
+		var cv2 = document.getElementById((isCrossView_default)?'vue_gauche':'vue_droite');
 		// canvas à la taille de l'image (pour chaque vue)
 		cv1.width=cv2.width=img.width/2;
 		cv1.height=cv2.height=img.height;
@@ -126,7 +243,7 @@
 	}
 	function charge_image_derivative()
 	{
-		uri = encodeURI(document.getElementById('imgrelpath').value) ;
+		uri = encodeURI(imgrelpath) ;
 		monImage.src=uri;
 	}
 	
@@ -218,7 +335,10 @@
 				if(e.ctrlKey || (e.key=='Control')) change_synchro('a');
 				if(e.key=='z') document.getElementById('toggleZoom').click(); 
 				if(e.key=='f') document.getElementById('toggleFullscreen').click(); 
-				if(e.key=='x') document.getElementById('toggleLP').click(); 
+				if(e.key=='w') document.getElementById('toggleFullwindow').click(); 
+				if(e.key=='x') document.getElementById('toggleView').click(); 
+				// In order to behave like FullScreen
+				if(e.key=='Escape' && isFullWindow) document.getElementById('toggleFullwindow').click(); 
 // 				if(e.key=='c') formAffiche=!formAffiche; 
 // 				document.getElementById('form').style.opacity = formAffiche?1:0 ; 
 			}
@@ -280,8 +400,8 @@
 					break;
 				}
 			}         
-			document.getElementById('z_vue_droite').style.backgroundPosition = x1+'px '+y1+'px' ;
-			document.getElementById('z_vue_gauche').style.backgroundPosition = x2+'px '+y2+'px' ;  
+			document.getElementById((isCrossView_default)?'z_vue_droite':'z_vue_gauche').style.backgroundPosition = x1+'px '+y1+'px' ;
+			document.getElementById((isCrossView_default)?'z_vue_gauche':'z_vue_droite').style.backgroundPosition = x2+'px '+y2+'px' ;  
 		}
 		function change_synchro(val)
 		{
@@ -307,7 +427,7 @@
 		}
 		function charge_image()
 		{
-			uri = encodeURI(document.getElementById('imgpath').value) ;
+			uri = encodeURI(imgpath) ;
 // 			alert('!!'+uri);
 			document.getElementById('z_vue_droite').style.backgroundImage = 'url('+uri+')' ;
 			document.getElementById('z_vue_gauche').style.backgroundImage = 'url('+uri+')' ;

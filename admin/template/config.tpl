@@ -35,6 +35,19 @@ jQuery(".showInfo").tipTip({
     </label>
     ({'for instance: _rl, -lr, stereo, ...'|translate}) ({'a possible dash followed by from 2 to 6 characters'|translate}) <span class="pre">{STEREOZOOM_REGEXP_SUFFIX}</span>
 </fieldset>
+
+<fieldset>
+	<legend>{'Stereogram view type'|translate}</legend>
+    <label>
+	   <input type="radio" name="STEREOZOOMPLUGIN_VAR_ISCROSSVIEW" value="true" {if ('true'== $stereoZoom.isCrossView)}checked="checked"{/if} />
+	   {'Cross view:'|translate}
+    </label>
+    <br />
+    <label>
+	   <input type="radio" name="STEREOZOOMPLUGIN_VAR_ISCROSSVIEW" value="false" {if ('false'== $stereoZoom.isCrossView)}checked="checked"{/if} />
+	   {'Parallel view:'|translate}
+    </label>
+</fieldset>
  
 <p class="formButtons"><input type="submit" name="save_config" value="{'Save Settings'|translate}"></p>
 </form> 

@@ -11,6 +11,9 @@ if (isset($_POST['save_config']))
 	if(preg_match(STEREOZOOM_REGEXP_SUFFIX, $_POST['STEREOZOOMPLUGIN_VAR_SUFFIX'])) {
 		$conf['stereoZoom']['suffix'] = $_POST['STEREOZOOMPLUGIN_VAR_SUFFIX'];
 	}
+	if(preg_match('/^(true|false)$/', $_POST['STEREOZOOMPLUGIN_VAR_ISCROSSVIEW'])) {
+		$conf['stereoZoom']['isCrossView'] = $_POST['STEREOZOOMPLUGIN_VAR_ISCROSSVIEW'];
+	}
 
 	conf_update_param('stereoZoom', $conf['stereoZoom']);
 	$page['infos'][] = l10n('Information data registered in database');

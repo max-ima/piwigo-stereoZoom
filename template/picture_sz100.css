@@ -2,11 +2,12 @@
 #sz100tools li::before {content: "   -   ";}
 #sz100tools li:first-child::before {content: "";}
 
-#yeux { background:url('patience.jpg') -550px 0px; display: flex; height:auto; }
+#lunettes {background:#222;}
+#yeux { background:#222 url('patience.png') -550px 0px; display: flex; height:auto; }
 #vue_droite, #vue_gauche{ flex: auto; cursor: pointer,hand; }
 
 
-#z_yeux { background:url('patience.jpg') -550px 0px; display: flex; height:80vh;}
+#z_yeux { background:#222 url('patience.png') -550px 0px; display: flex; height:80vh;}
 #z_yeux:fullscreen,
 #z_yeux:-ms-fullscreen,
 #z_yeux:-moz-full-screen,

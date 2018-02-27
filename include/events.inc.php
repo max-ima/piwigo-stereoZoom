@@ -40,6 +40,7 @@ function stereoZoom_render_element_content($content, $picture)
 	$template->assign( array(
 		'STEREOZOOM_PATH' => STEREOZOOM_PATH,
 		'STEREOZOOM_IMG_PATH' => $picture['path'],
+		'stereoZoom' => $conf['stereoZoom'],
 // 		'STEREOZOOM_IMG_REL_PATH' => $picture['derivatives']['medium']->rel_path,
 		'STEREOZOOM_IMG_INFO' => var_export($content, true),
 	) );
