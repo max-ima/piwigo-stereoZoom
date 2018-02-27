@@ -7,13 +7,25 @@
 	var isForCrossView = true // Le stéréogramme est monté en vison croisée, écrasé par la suite par $stereoZoom.isForCrossView
 	var isFullWindow_default = false // Le stéréogramme est en pleine fenêtre
 	
+	var cookieMaxAge = 60*60*24*7 // 7 jours
+
 	
+	var szHidden ;
+	var szDisplay ;
+	var szFitBox;
+	var szFitEyes ;
+	var sz100Box ;
 // variables qui seront définies dans le corps du template associé
 // var imgDerivPath='{$current.selected_derivative->get_url()}'; 
 // var imgOrigPath='{$STEREOZOOM_IMG_PATH}';
 	
 	// Initialisation de l'interface, liens/boutons de changement de mode
 	window.onload = function(){
+		 szHidden = document.getElementById('szHidden');
+		 szDisplay = document.getElementById('szDisplay');
+		 szFitBox = document.getElementById('lunettes');
+		 szFitEyes = document.getElementById('yeux');
+		 sz100Box = document.getElementById('z_yeux');
 // 		console.log(document.cookie)
 		
 		if(hasTouchscreen) document.getElementById('toggleFullwindow').parentNode.style.display = 'none'
@@ -21,121 +33,88 @@
 		
 		document.getElementById('toggleZoom').onclick = function() {
 			isZoom100=!isZoom100
-			document.cookie = 'stereoZoom_isZoom100='+isZoom100+'; max-age='+60*60*24*7;
+			document.cookie = 'stereoZoom_isZoom100='+isZoom100+'; max-age='+cookieMaxAge;
 // 			console.log(document.cookie)
 			
-			zoomFit = document.getElementById('lunettes');
-			zoom100 = document.getElementById('z_yeux');
 			moveMode = document.getElementById('toggleDA').parentNode;
-			
-// 			if (isFullScreen) document.getElementById('toggleFullscreen').click()
 				
 			obj = document.getElementById('toggleZoom')
 			if(isZoom100) {
-				zoomFit.style.display = 'none' ;
-				zoom100.style.display = 'flex' ;
+				szHidden.appendChild(szDisplay.replaceChild(sz100Box, szFitBox));
 				moveMode.style.display = 'inline' ;
 				obj.textContent='Z 100%'
 			}
 			else {
-				zoomFit.style.display = 'block' ;
-				zoom100.style.display = 'none' ;
+				szHidden.appendChild(szDisplay.replaceChild(szFitBox, sz100Box));
 				moveMode.style.display = 'none' ;
 				obj.textContent='Z Fit'
 			}
-			
+			handleFullDisplay();
 			return false
 		}
 		document.getElementById('toggleView').onclick = function() {
 			isCrossView = !isCrossView
-			document.cookie = 'stereoZoom_isCrossView='+isCrossView+'; max-age='+60*60*24*7;
+			document.cookie = 'stereoZoom_isCrossView='+isCrossView+'; max-age='+cookieMaxAge;
 // 			console.log(document.cookie)
 			
 			obj = document.getElementById('toggleView')
-// 			isCrossView = !(obj.textContent=='Vision parallèle')
 			if(isCrossView) {
 				obj.textContent='Vision croisée'
-				mesYeux = document.getElementById('yeux');
-	// 			mesYeux.insertBefore(mesYeux.firstChild, null); // met le premier en dernier
-				mesYeux.insertBefore(document.getElementById('vue_gauche'), null); // met la vue gauche en dernier
-				
-				mesYeux = document.getElementById('z_yeux');
-	// 			mesYeux.insertBefore(mesYeux.firstChild, null); // met le premier en dernier
-				mesYeux.insertBefore(document.getElementById('z_vue_gauche'), null); // met la vue gauche en dernier
+				szFitEyes.insertBefore(document.getElementById('vue_gauche'), null); // met la vue gauche en dernier
+				sz100Box.insertBefore(document.getElementById('z_vue_gauche'), null); // met la vue gauche en dernier
 			}
 			else {
 				obj.textContent='Vision parallèle'
-				mesYeux = document.getElementById('yeux');
-	// 			mesYeux.insertBefore(mesYeux.firstChild, null); // met le premier en dernier
-				mesYeux.insertBefore(document.getElementById('vue_droite'), null); // met la vue gauche en dernier
-				
-				mesYeux = document.getElementById('z_yeux');
-	// 			mesYeux.insertBefore(mesYeux.firstChild, null); // met le premier en dernier
-				mesYeux.insertBefore(document.getElementById('z_vue_droite'), null); // met la vue gauche en dernier
+				szFitEyes.insertBefore(document.getElementById('vue_droite'), null); // met la vue gauche en dernier				
+				sz100Box.insertBefore(document.getElementById('z_vue_droite'), null); // met la vue gauche en dernier
 			}
 			return false
 		}
 		document.getElementById('toggleFullwindow').onclick = function() {
 			if (!hasTouchscreen) {
-			isFullWindow=!isFullWindow
-			document.cookie = 'stereoZoom_isFullWindow='+isFullWindow+'; max-age='+60*60*24*7;
-// 			console.log(document.cookie)
-			
-			zoomFit = document.getElementById('lunettes');
-			zoom100 = document.getElementById('z_yeux');
-			
+				isFullWindow=!isFullWindow
+				document.cookie = 'stereoZoom_isFullWindow='+isFullWindow+'; max-age='+cookieMaxAge;
+	// 			console.log(document.cookie)
 				
-			obj = document.getElementById('toggleFullwindow')
-			if(isFullWindow) {
-				// les deux modes sont rendus exclusifs l'un de l'autre
-				if (isFullScreen) document.getElementById('toggleFullscreen').click();
-					
-				zoomFit.style.width = '100%' ;
-				zoomFit.style.height = '100vh' ;
-				zoomFit.style.position = 'fixed' ;
-				zoomFit.style.left = '0px' ;
-				zoomFit.style.top = '0px' ;
-				zoomFit.style.margin = '0px' ;
-				zoomFit.style.zIndex = '101' ;
-				
-				zoom100.style.width = '100%' ;
-				zoom100.style.height = '100vh' ;
-				zoom100.style.position = 'fixed' ;
-				zoom100.style.left = '0px' ;
-				zoom100.style.top = '0px' ;
-				zoom100.style.margin = '0px' ;
-				zoom100.style.zIndex = '101' ;
-				
-				obj.textContent='W full'
-			}
-			else {
-				zoomFit.style.width = '' ;
-				zoomFit.style.height = '' ;
-				zoomFit.style.position = '' ;
-				zoomFit.style.left = '' ;
-				zoomFit.style.top = '' ;
-				zoomFit.style.margin = '' ;
-				zoomFit.style.zIndex = '' ;
-				
-				zoom100.style.width = '' ;
-				zoom100.style.height = '' ;
-				zoom100.style.position = '' ;
-				zoom100.style.left = '' ;
-				zoom100.style.top = '' ;
-				zoom100.style.margin = '' ;
-				zoom100.style.zIndex = '' ;
-				
-				obj.textContent='W'
-			}
+				obj = document.getElementById('toggleFullwindow')
+// 				if (!isZoom100) {
+					if(isFullWindow) {
+						// les deux modes sont rendus exclusifs l'un de l'autre
+						if (isFullScreen) document.getElementById('toggleFullscreen').click();
+						
+						document.querySelector('html').style.overflowY='hidden';
+						szDisplay.style.width = '100%' ;
+						szDisplay.style.height = '100vh' ;
+						szDisplay.style.position = 'fixed' ;
+						szDisplay.style.left = '0px' ;
+						szDisplay.style.top = '0px' ;
+						szDisplay.style.margin = '0px' ;
+						szDisplay.style.zIndex = '101' ;
+						
+						obj.textContent='W full'
+					}
+					else {
+						document.querySelector('html').style.overflowY='';
+						
+						szDisplay.style.width = '' ;
+						szDisplay.style.height = '' ;
+						szDisplay.style.position = '' ;
+						szDisplay.style.left = '' ;
+						szDisplay.style.top = '' ;
+						szDisplay.style.margin = '' ;
+						szDisplay.style.zIndex = '' ;
+						
+						obj.textContent='W'
+					}
+// 				}
+				handleFullDisplay()
 			}
 			return false
 		}
 		document.getElementById('toggleFullscreen').onclick = function() {
-			var elem = document.getElementById((isZoom100)?'z_yeux':'lunettes');
+			elem = szDisplay
 // 			console.log(elem)
 			if (isFullScreen) {
-// 				document.exitFullscreeddn();
-// 				elem.exitFullscreen();
 				if (document.exitFullscreen) {
 					document.exitFullscreen();
 				} 
@@ -148,18 +127,20 @@
 				else if (document.webkitExitFullscreen) {
 					document.webkitExitFullscreen();
 				} 
-				else {alert(document.exitFullscreen ||		//W3C
-					document.exitFullScreen ||		//W3C
-					document.webkitExitFullscreen ||	//Chrome etc.
-					document.webkitExitFullScreen ||	//Chrome etc.
-					document.webkitCancelFullscreen ||	//Chrome etc.
-					document.webkitCancelFullScreen ||	//Chrome etc.
-					document.mozCancelFullscreen ||		//FireFox
-					document.mozCancelFullScreen ||		//FireFox
-					document.mozExitFullscreen ||		//FireFox
-					document.mozExitFullScreen ||		//FireFox
-					document.msExitFullscreen ||		//IE11
-					document.msExitFullScreen)}
+				else {
+					alert(document.exitFullscreen ||		//W3C
+						document.exitFullScreen ||		//W3C
+						document.webkitExitFullscreen ||	//Chrome etc.
+						document.webkitExitFullScreen ||	//Chrome etc.
+						document.webkitCancelFullscreen ||	//Chrome etc.
+						document.webkitCancelFullScreen ||	//Chrome etc.
+						document.mozCancelFullscreen ||		//FireFox
+						document.mozCancelFullScreen ||		//FireFox
+						document.mozExitFullscreen ||		//FireFox
+						document.mozExitFullScreen ||		//FireFox
+						document.msExitFullscreen ||		//IE11
+						document.msExitFullScreen)
+				}
 			}
 			else {
 				if (elem.requestFullscreen) {
@@ -180,31 +161,30 @@
 		}
 		document.onwebkitfullscreenchange = document.onmozfullscreenchange = document.onfullscreenchange = function( event ) {
 			isFullScreen=!isFullScreen
-// 			document.cookie = 'stereoZoom_isFullScreen='+isFullScreen+'; max-age='+0;
-//  			console.log(document.cookie)
 
 			if (isFullScreen) {
 				// les deux modes sont rendus exclusifs l'un de l'autre
 				if(isFullWindow) document.getElementById('toggleFullwindow').click();
 			}
-			handleFullscreen()
+			handleFullDisplay()
 		};
 		
 		document.getElementById('vue_droite').ondblclick = 
 		document.getElementById('z_vue_droite').ondblclick = function() {
-			document.getElementById('linkPrev').click()
+			if (elem=document.getElementById('linkPrev') || document.querySelector('div.ui-controlgroup-controls a[rel="prev"]')) elem.click() ;
 			return false
 		}
 		document.getElementById('vue_gauche').ondblclick = 
 		document.getElementById('z_vue_gauche').ondblclick = function() {
-			document.getElementById('linkNext').click()
+			if (elem=document.getElementById('linkNext') || document.querySelector('div.ui-controlgroup-controls a[rel="next"]')) elem.click() ;
 			return false
 		}
 		
 		isZoom100=eval(document.cookie.replace(/(?:(?:^|.*;\s*)stereoZoom_isZoom100\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
 		if(typeof isZoom100 === 'undefined') isZoom100 = isZoom100_default
-		isZoom100=!isZoom100
-		document.getElementById('toggleZoom').click()
+// 		isZoom100=!isZoom100
+// 		document.getElementById('toggleZoom').click()
+		szDisplay.appendChild(isZoom100?sz100Box:szFitBox)
 		
 		isCrossView=eval(document.cookie.replace(/(?:(?:^|.*;\s*)stereoZoom_isCrossView\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
 		if(typeof isCrossView === 'undefined') isCrossView = isForCrossView
@@ -216,19 +196,27 @@
 		isFullWindow=!isFullWindow
 		document.getElementById('toggleFullwindow').click()
 		
-		
 		charge_image_derivative();
 		charge_image();
 		
+		if (!isZoom100) {
+		// Pour corriger l'affichage une fois l'image chargée (centrage ou barre de défilement)
+			SIFit = setInterval(function(){
+				if(szFitImage.src!='' && szFitImage.complete) {
+					handleFullDisplay()
+					clearInterval(SIFit)
+				}
+			}, 40)
+		}
 	}
 	
 	Image.prototype.load = function(url){
         var thisImg = this;
 		var SIimg = setInterval(function() {
-			console.log(thisImg.completedPercentage+' %')
-			document.getElementById('z_vue_droite').textContent=thisImg.completedPercentage+' % '
-			document.getElementById('z_vue_gauche').textContent=' '+thisImg.completedPercentage+' %'
-		}, 100);
+// 			console.log(thisImg.completedPercentage+' %')
+			document.getElementById('z_vue_droite').textContent=thisImg.completedPercentage+' %  '
+			document.getElementById('z_vue_gauche').textContent='  '+thisImg.completedPercentage+' %'
+		}, 40);
         var xmlHTTP = new XMLHttpRequest();
         xmlHTTP.open('GET', url,true);
         xmlHTTP.responseType = 'arraybuffer';
@@ -255,7 +243,7 @@
 	var szFitImage=new Image();
 	szFitImage.onload = function() {
 		draw(this);
-		handleFullscreen()
+		handleFullDisplay()
 	};
 	function draw(img) {
 		var cv1 = document.getElementById((isForCrossView)?'vue_droite':'vue_gauche');
@@ -277,28 +265,29 @@
 	
 		
 	
-	// Gestion du plein écran
-	function handleFullscreen() {
+	// Gestion du plein écran, et pleine fenêtre
+	// (pour szFitBox) - centrage ou barre de défilement
+	function handleFullDisplay() {
 		if (!isZoom100) {
-			if (isFullScreen) {
-				if (szFitImage.width/szFitImage.height > window.innerWidth/window.innerHeight) {
-					document.getElementById('lunettes').style.overflowY='visible';
+			if (isFullScreen || isFullWindow) {
+				if (szFitImage.src!='' && szFitImage.complete && (szFitImage.width/szFitImage.height > window.innerWidth/window.innerHeight)) {
+					szDisplay.style.overflowY='visible';
 					
-					document.getElementById('yeux').style.marginTop='50vh';
-					document.getElementById('yeux').style.transform='translateY(-50%)';
+					szFitBox.style.marginTop='50vh';
+					szFitBox.style.transform='translateY(-50%)';
 				}
 				else {
-					document.getElementById('lunettes').style.overflowY='scroll';
+					szDisplay.style.overflowY='scroll';
 					
-					document.getElementById('yeux').style.marginTop='auto';
-					document.getElementById('yeux').style.transform='none';
+					szFitBox.style.marginTop='auto';
+					szFitBox.style.transform='none';
 				}
 			}
 			else {
-				document.getElementById('lunettes').style.overflowY='visible';
+				szDisplay.style.overflowY='visible';
 				
-				document.getElementById('yeux').style.marginTop='auto';
-				document.getElementById('yeux').style.transform='none';
+				szFitBox.style.marginTop='auto';
+				szFitBox.style.transform='none';
 			}
 		}
 	}
@@ -348,7 +337,7 @@
 			document.getElementById('z_yeux').onmousemove = document.getElementById('z_yeux').ontouchmove = function(evt){
 				Xm = evt.clientX || evt.touches[0].pageX
 				Ym = evt.clientY || evt.touches[0].pageY
-//  				document.getElementById('info').textContent = etat+' '+x1+'px '+y1+'px | '+x2+'px '+y2+'px | '+X1+'px '+Y1+'px | '+X2+'px '+Y2+'px | '+Xm+'px '+Ym+'px | '+Xd+'px '+Yd+'px' ;
+//  			console.log( etat+' '+x1+'px '+y1+'px | '+x2+'px '+y2+'px | '+X1+'px '+Y1+'px | '+X2+'px '+Y2+'px | '+Xm+'px '+Ym+'px | '+Xd+'px '+Yd+'px') ;
 			}
 			document.getElementById('z_yeux').onmouseout = document.getElementById('z_yeux').onmouseup = document.getElementById('z_yeux').ontouchend = document.getElementById('z_yeux').ontouchcancel = function(evt){
 				clearInterval(SI1);
@@ -357,22 +346,26 @@
 				X2 = x2
 				Y2 = y2
 				document.getElementById('z_vue_droite').style.cursor = document.getElementById('z_vue_gauche').style.cursor = 'grab' ; 
+// 				document.cookie = 'stereoZoom_'+pictureId+'_X1='+X1+'; max-age='+cookieMaxAge;
+// 				document.cookie = 'stereoZoom_'+pictureId+'_Y1='+Y1+'; max-age='+cookieMaxAge;
+// 				document.cookie = 'stereoZoom_'+pictureId+'_X2='+X2+'; max-age='+cookieMaxAge;
+// 				document.cookie = 'stereoZoom_'+pictureId+'_Y2='+Y2+'; max-age='+cookieMaxAge;
+				document.cookie = 'stereoZoom_'+pictureId+'_COORDS='+JSON.stringify(new Array(X1, Y1, X2, Y2))+'; max-age='+cookieMaxAge;
+// 				console.log(document.cookie)
 			}
 			document.onkeydown = function (e){
-//                 alert("Key Pressed: " + String.fromCharCode(e.key) + "\n"+ "key: " + e.key + "\n"+ "CTRL key pressed: " + e.ctrlKey + "\n");
 				if(e.ctrlKey || (e.key=='Control')) change_synchro('a');
-				if(e.key=='z') document.getElementById('toggleZoom').click(); 
-				if(e.key=='f') document.getElementById('toggleFullscreen').click(); 
-				if(e.key=='w') document.getElementById('toggleFullwindow').click(); 
-				if(e.key=='x') document.getElementById('toggleView').click(); 
+				if(e.key.toLowerCase()=='z') document.getElementById('toggleZoom').click(); 
+				if(e.key.toLowerCase()=='f') document.getElementById('toggleFullscreen').click(); 
+				if(e.key.toLowerCase()=='w') document.getElementById('toggleFullwindow').click(); 
+				if(e.key.toLowerCase()=='x') document.getElementById('toggleView').click(); 
 				// In order to behave like FullScreen
 				if(e.key=='Escape' && isFullWindow) document.getElementById('toggleFullwindow').click(); 
-// 				if(e.key=='c') formAffiche=!formAffiche; 
+// 				if(e.key.toLowerCase()=='c') formAffiche=!formAffiche; 
 // 				document.getElementById('form').style.opacity = formAffiche?1:0 ; 
 			}
 			document.onkeyup = function (e){
-//                 alert(e.key);
-				if(e.key=='Control') change_synchro('d');
+				if(e.ctrlKey || (e.key=='Control')) change_synchro('d');
 			}
 			document.getElementById('toggleDA').onclick = function() {
 				obj = document.getElementById('toggleDA')
@@ -392,14 +385,17 @@
 			sz100Image.load(imgOrigUrl);
 			
 			sz100Image.onload = function () {
-				X1 = -this.width/4;
-				Y1 = -this.height/2;    
+				if( COORDS == '') {
+					X1 = -this.width/4;
+					Y1 = -this.height/2;    
 
-				X2 = -this.width*3/4;
-				Y2 = Y1; 
-// 				X1=X2=Y1=Y2=0
-// 				console.log(X1, Y1, X2, Y2);
-				moveimage(window.innerWidth/4, window.innerHeight/2);
+					X2 = -this.width*3/4;
+					Y2 = Y1; 
+					moveimage(window.innerWidth/4, window.innerHeight/2);
+				}
+				else {
+				}
+				
 				change_synchro('d');
 			};
 
@@ -458,7 +454,17 @@
 		function charge_image()
 		{
 			uri = encodeURI(imgOrigPath) ;
-// 			alert('!!'+uri);
+			COORDS=document.cookie.replace(new RegExp('(?:(?:^|.*;\\s*)stereoZoom_'+pictureId+'_COORDS\\s*\\=\\s*([^;]*).*$)|^.*$', 'g'), '$1')
+			if( COORDS == '') {
+			}
+			else {
+				COORDS=JSON.parse(COORDS)
+				X1=COORDS[0]
+				Y1=COORDS[1]
+				X2=COORDS[2]
+				Y2=COORDS[3]
+				moveimage(0, 0);
+			}
 			document.getElementById('z_vue_droite').style.backgroundImage = 'url('+uri+')' ;
 			document.getElementById('z_vue_gauche').style.backgroundImage = 'url('+uri+')' ;
 			initialise_image() ;

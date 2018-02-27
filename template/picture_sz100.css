@@ -2,15 +2,18 @@
 #sz100tools li::before {content: "   -   ";}
 #sz100tools li:first-child::before {content: "";}
 
-#lunettes {background:#222;}
-#yeux { background:#222 url('patience.png') -550px 0px; display: flex; height:auto; }
+#szHidden {display: none;}
+#szDisplay {height:80vh; background:#222;}
+#szDisplay:fullscreen,
+#szDisplay:-ms-fullscreen,
+#szDisplay:-moz-full-screen,
+#szDisplay:-webkit-full-screen {width:100vw; height:100vh;}
+
+#lunettes {}
+#yeux { background: url('patience.png') -550px 0px; display: flex; height:auto; }
 #vue_droite, #vue_gauche{ flex: auto; cursor: pointer,hand; }
 
 
-#z_yeux { background:#222 url('patience.png') -550px 0px; display: flex; height:80vh;}
-#z_yeux:fullscreen,
-#z_yeux:-ms-fullscreen,
-#z_yeux:-moz-full-screen,
-#z_yeux:-webkit-full-screen {width: 100%;height: 100%;}
+#z_yeux { background: url('patience.png') -550px 0px; display: flex; height:100%;}
 #z_vue_droite, #z_vue_gauche{ flex: auto; cursor: grab; background-repeat: no-repeat;}
-#z_vue_droite, #z_vue_gauche{ font-size: 20vh;}
+#z_vue_droite, #z_vue_gauche{ font-size: 10vw; line-height: 100vh;}

@@ -41,6 +41,7 @@ function stereoZoom_render_element_content($content, $picture)
 		'STEREOZOOM_PATH' => STEREOZOOM_PATH,
 		'STEREOZOOM_IMG_PATH' => $picture['path'],
 		'stereoZoom' => $conf['stereoZoom'],
+		'pictureId' => $picture['id'],
 // 		'STEREOZOOM_IMG_REL_PATH' => $picture['derivatives']['medium']->rel_path,
 		'STEREOZOOM_IMG_INFO' => var_export($content, true),
 	) );
