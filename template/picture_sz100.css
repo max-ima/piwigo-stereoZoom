@@ -1,9 +1,9 @@
-#sz100tools li {display: inline-block;}
-#sz100tools li::before {content: "   -   ";}
-#sz100tools li:first-child::before {content: "";}
+#sz100tools li {display: inline-block; width:9em;}
+/* #sz100tools li::before {content: "   -   ";} */
+/* #sz100tools li:first-child::before {content: "";} */
 
 #szHidden {display: none;}
-#szDisplay {height:80vh; background:#222;}
+#szDisplay {background:#222;}
 #szDisplay:fullscreen,
 #szDisplay:-ms-fullscreen,
 #szDisplay:-moz-full-screen,
