@@ -5,8 +5,8 @@ Changes from v1.1.0 to v1.2.0
 - Wheel zoom on full resolution stereogram (Z 100%, 123%,  82%, whatever you want)
 - 100% zoomed stereogram scrolled positions and zoom value stored in cookie
 - Add reset button to center image and reset zoom to 100%
-- Add +/- buttons to monitor zoom on mobile
-Bugs
+- Add +/− buttons to monitor zoom on mobile
+Solved Bug
 - Preventdefault for touchmove (image moving does not mix anymore with page moving)
 
 Changes from v1.0.0 to v1.1.0

@@ -632,7 +632,7 @@ function szDisplayChangeAfter() {
 		myView = document.getElementById('z_vue_gauche')
 		widthDelta = myView.offsetWidth - szDisplayW;
 		heightDelta = myView.offsetHeight - szDisplayH;
-		console.log('b', isFullScreen, isFullWindow, widthDelta, heightDelta)
+// 		console.log('b', isFullScreen, isFullWindow, widthDelta, heightDelta)
 		moveimage(widthDelta/2, heightDelta/2); moveimage_end();
 	}
 }
