@@ -7,8 +7,11 @@ var hasTouchscreen = 'ontouchstart' in window;
 hasTouchscreen = false
 
 var isFullScreen = false // L'image stéréo est en plein écran, sinon est dans le corps de page
+var isZoom100
 var isZoom100_default = false // L'image stéréo est en mode zoom 100% (un pixel image par pixel écran), sinon en mode vue générale
+var isCrossView = true // Le stéréogramme est présenté en vison croisée
 var isForCrossView = true // Le stéréogramme est monté en vison croisée, écrasé par la suite par $stereoZoom.isForCrossView
+var isFullWindow = false // Le stéréogramme est en pleine fenêtre
 var isFullWindow_default = false // Le stéréogramme est en pleine fenêtre
 
 var cookieMaxAge = 60*60*24*7 // 7 jours
@@ -34,7 +37,7 @@ window.onload = function(){
 		szFitBox = document.getElementById('lunettes');
 		szFitEyes = document.getElementById('yeux');
 		sz100Box = document.getElementById('z_yeux');
-// 		console.log(document.cookie)
+
 	
 	if(hasTouchscreen) document.getElementById('toggleFullwindow').parentNode.style.display = 'none'
 
@@ -42,21 +45,25 @@ window.onload = function(){
 	document.getElementById('toggleZoom').onclick = function() {
 		isZoom100=!isZoom100
 		document.cookie = 'stereoZoom_isZoom100='+isZoom100+'; max-age='+cookieMaxAge;
-// 			console.log(document.cookie)
+
 		
 		moveMode = document.getElementById('toggleDA').parentNode;
 			
 		obj = document.getElementById('toggleZoom')
-		if(isZoom100) {
+		if (isZoom100) {
 			szHidden.appendChild(szDisplay.replaceChild(sz100Box, szFitBox));
-// 				moveMode.style.display = 'inline' ;
-			moveMode.style.visibility = 'visible' ;
-			obj.textContent='Z 100%'
+			moveMode.style.visibility = 
+			document.getElementById('buttonZoomIn').style.visibility =
+			document.getElementById('buttonZoomOut').style.visibility = document.getElementById('reset').style.visibility = 'visible'
+			obj.textContent='Z '+Math.round(zFactor*100)+'%'
+			
 		}
 		else {
 			szHidden.appendChild(szDisplay.replaceChild(szFitBox, sz100Box));
-// 				moveMode.style.display = 'none' ;
-			moveMode.style.visibility = 'hidden' ;
+			moveMode.style.visibility = 
+			document.getElementById('buttonZoomIn').style.visibility =
+			document.getElementById('buttonZoomOut').style.visibility =
+			document.getElementById('reset').style.visibility = 'hidden'
 			obj.textContent='Z Fit'
 		}
 		handleFullDisplay();
@@ -65,7 +72,7 @@ window.onload = function(){
 	document.getElementById('toggleView').onclick = function() {
 		isCrossView = !isCrossView
 		document.cookie = 'stereoZoom_isCrossView='+isCrossView+'; max-age='+cookieMaxAge;
-// 			console.log(document.cookie)
+
 		
 		obj = document.getElementById('toggleView')
 		if(isCrossView) {
@@ -80,15 +87,37 @@ window.onload = function(){
 		}
 		return false
 	}
+	document.getElementById('reset').onclick = function() {
+		change_synchro('d');
+		COORDS=''
+		sz100Image.onload()
+		return false
+	}
+	document.getElementById('buttonZoomIn').onclick = function(e) {
+		width=document.getElementById('z_vue_gauche').offsetWidth;
+		height=document.getElementById('z_vue_gauche').offsetHeight;
+		zoomimage(width/2, height/2, 3);
+		moveimage_end();
+		return false
+	}
+	document.getElementById('buttonZoomOut').onclick = function() {
+		width=document.getElementById('z_vue_gauche').offsetWidth;
+		height=document.getElementById('z_vue_gauche').offsetHeight;
+		zoomimage(width/2, height/2, -3);
+		moveimage_end();
+		return false
+	}
 	document.getElementById('toggleFullwindow').onclick = function() {
 		if (!hasTouchscreen) {
 			isFullWindow=!isFullWindow
 			document.cookie = 'stereoZoom_isFullWindow='+isFullWindow+'; max-age='+cookieMaxAge;
-// 			console.log(document.cookie)
+
 			
 			if(isFullWindow) {
 				// les deux modes sont rendus exclusifs l'un de l'autre
 				if (isFullScreen) document.getElementById('toggleFullscreen').click();
+			
+				szDisplayChangeBefore()
 				
 				document.querySelector('html').style.overflowY='hidden';
 				szDisplay.style.width = '100vw' ;
@@ -101,11 +130,11 @@ window.onload = function(){
 				
 				
 				if( window.history && window.history.pushState ){
-// 					console.log("history.state: " + JSON.stringify(history.state))
+
 					if (history.state == null) {
 						history.pushState( stateObj, null, "" );
 						window.onpopstate = function(event){
-// 							console.log("location: " + document.location + ", state: " + JSON.stringify(event.state) + ", history.state: " + JSON.stringify(history.state))
+
 							if (isFullWindow) {
 								document.getElementById('toggleFullwindow').click(); 
 							}
@@ -118,6 +147,8 @@ window.onload = function(){
 				}
 			}
 			else {
+				szDisplayChangeBefore()
+				
 				document.querySelector('html').style.overflowY='';
 				
 				szDisplay.style.width = '' ;
@@ -128,13 +159,14 @@ window.onload = function(){
 				szDisplay.style.margin = '' ;
 				szDisplay.style.zIndex = '' ;
 			}
+			szDisplayChangeAfter()
 			handleFullDisplay()
 		}
 		return false
 	}
 	document.getElementById('toggleFullscreen').onclick = function() {
 		elem = szDisplay
-// 			console.log(elem)
+		szDisplayChangeBefore()
 		if (isFullScreen) {
 			if (document.exitFullscreen) {
 				document.exitFullscreen();
@@ -181,8 +213,9 @@ window.onload = function(){
 		return false
 	}
 	document.onwebkitfullscreenchange = document.onmozfullscreenchange = document.onfullscreenchange = function( event ) {
+		szDisplayChangeAfter()
+		
 		isFullScreen=!isFullScreen
-
 		if (isFullScreen) {
 			// les deux modes sont rendus exclusifs l'un de l'autre
 			if(isFullWindow) document.getElementById('toggleFullwindow').click();
@@ -220,9 +253,9 @@ window.onload = function(){
 	
 	isZoom100=eval(document.cookie.replace(/(?:(?:^|.*;\s*)stereoZoom_isZoom100\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
 	if(typeof isZoom100 === 'undefined') isZoom100 = isZoom100_default
-// 		isZoom100=!isZoom100
-// 		document.getElementById('toggleZoom').click()
+	isZoom100=!isZoom100
 	szDisplay.appendChild(isZoom100?sz100Box:szFitBox)
+	document.getElementById('toggleZoom').click()
 	
 	isCrossView=eval(document.cookie.replace(/(?:(?:^|.*;\s*)stereoZoom_isCrossView\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
 	if(typeof isCrossView === 'undefined') isCrossView = isForCrossView
@@ -234,8 +267,8 @@ window.onload = function(){
 	isFullWindow=!isFullWindow
 	document.getElementById('toggleFullwindow').click()
 	
-	charge_image_derivative();
-	charge_image();
+	szFitImage_load();
+	sz100Image_load();
 	
 	if (!isZoom100) {
 	// Pour corriger l'affichage une fois l'image chargée (centrage ou barre de défilement)
@@ -251,7 +284,7 @@ window.onload = function(){
 Image.prototype.load = function(url){
 	var thisImg = this;
 	var SIimg = setInterval(function() {
-// 			console.log(thisImg.completedPercentage+' %')
+
 		document.getElementById('z_vue_droite').textContent=thisImg.completedPercentage+' %  '
 		document.getElementById('z_vue_gauche').textContent='  '+thisImg.completedPercentage+' %'
 	}, 40);
@@ -289,13 +322,13 @@ function draw(img) {
 	// canvas à la taille de l'image (pour chaque vue)
 	cv1.width=cv2.width=img.width/2;
 	cv1.height=cv2.height=img.height;
-// 		console.log(cv1.width, cv1.height);
+
 	var ctx1 = cv1.getContext('2d');
 	var ctx2 = cv2.getContext('2d');
 	ctx1.drawImage(img, 0, 0, img.width/2, img.height, 0, 0, img.width/2, img.height);
 	ctx2.drawImage(img, img.width/2, 0, img.width/2, img.height, 0, 0, img.width/2, img.height);
 }
-function charge_image_derivative()
+function szFitImage_load()
 {
 	uri = encodeURI(imgDerivPath) ;
 	szFitImage.src=uri;
@@ -306,6 +339,7 @@ function charge_image_derivative()
 // Gestion du plein écran, et pleine fenêtre
 // (pour szFitBox) - centrage ou barre de défilement
 function handleFullDisplay() {
+	szDisplayChangeBefore()
 	if (!isZoom100) {
 		if (isFullScreen || isFullWindow) {
 			if (szFitImage.src!='' && szFitImage.complete && (szFitImage.width/szFitImage.height > window.innerWidth/window.innerHeight)) {
@@ -320,14 +354,14 @@ function handleFullDisplay() {
 				szFitBox.style.marginTop='auto';
 				szFitBox.style.transform='none';
 			}
-		szDisplay.style.height='100vh';
+			szDisplay.style.height='100vh';
 		}
 		else {
 			szDisplay.style.overflowY='visible';
 			
 			szFitBox.style.marginTop='auto';
 			szFitBox.style.transform='none';
-		szDisplay.style.height='auto';
+			szDisplay.style.height='auto';
 		}
 	}
 	else {
@@ -338,12 +372,16 @@ function handleFullDisplay() {
 			szDisplay.style.height='80vh';
 		}
 	}
+	szDisplayChangeAfter()
 }
 
 
 //  Zoom100% : Gestion du déplacement 
 	
 var sz100Image;
+var sz100ImageW;
+var szDisplayW
+var szDisplayH;
 var SI1, SI2;
 var x, y ;
 var etat = 1 ;
@@ -366,8 +404,13 @@ x2 = X2 ;
 y2 = Y2 ;      
 		
 
+var zVal=0;
+var zCte=1.03;
+var zStep=1;
+var zFactor=1;
+var zFactorPrev;
 	
-function initialise_image()
+function sz100Image_init()
 {
 	document.getElementById('z_yeux').onmousedown = document.getElementById('z_yeux').ontouchstart = function(evt){
 		Xm = Xd = evt.clientX || evt.touches[0].pageX
@@ -386,35 +429,48 @@ function initialise_image()
 		Xm = evt.clientX || evt.touches[0].pageX
 		Ym = evt.clientY || evt.touches[0].pageY
 		
-    evt.preventDefault();
-//     evt.stopPropagation();
-//  			console.log( etat+' '+x1+'px '+y1+'px | '+x2+'px '+y2+'px | '+X1+'px '+Y1+'px | '+X2+'px '+Y2+'px | '+Xm+'px '+Ym+'px | '+Xd+'px '+Yd+'px') ;
+		evt.preventDefault();
+// 		evt.stopPropagation();
+
 	}
 	document.getElementById('z_yeux').onmouseout = document.getElementById('z_yeux').onmouseup = document.getElementById('z_yeux').ontouchend = document.getElementById('z_yeux').ontouchcancel = function(evt){
 		clearInterval(SI1);
-		X1 = x1
-		Y1 = y1
-		X2 = x2
-		Y2 = y2
+		moveimage_end()
 		document.getElementById('z_vue_droite').style.cursor = document.getElementById('z_vue_gauche').style.cursor = 'grab' ; 
-// 				document.cookie = 'stereoZoom_'+pictureId+'_X1='+X1+'; max-age='+cookieMaxAge;
-// 				document.cookie = 'stereoZoom_'+pictureId+'_Y1='+Y1+'; max-age='+cookieMaxAge;
-// 				document.cookie = 'stereoZoom_'+pictureId+'_X2='+X2+'; max-age='+cookieMaxAge;
-// 				document.cookie = 'stereoZoom_'+pictureId+'_Y2='+Y2+'; max-age='+cookieMaxAge;
-		document.cookie = 'stereoZoom_'+pictureId+'_COORDS='+JSON.stringify(new Array(X1, Y1, X2, Y2))+'; max-age='+cookieMaxAge;
-// 				console.log(document.cookie)
 	}
+	
+	document.getElementById('z_vue_droite').onwheel = document.getElementById('z_vue_gauche').onwheel = function(evt) {
+		evt.preventDefault();
+				
+		var elInfo = this.getBoundingClientRect();
+		evtX = (evt.clientX || evt.touches[0].pageX) - elInfo.left
+		evtY = (evt.clientY || evt.touches[0].pageY) - elInfo.top
+		
+		zoomimage(evtX, evtY, -evt.deltaY)
+	};
 	document.onkeydown = function (e){
-		if(e.ctrlKey || (e.key=='Control')) change_synchro('a');
-		else if(e.key.toLowerCase()=='z') document.getElementById('toggleZoom').click(); 
-		else if(e.key.toLowerCase()=='f') document.getElementById('toggleFullscreen').click(); 
-		else if(e.key.toLowerCase()=='w') document.getElementById('toggleFullwindow').click(); 
-		else if(e.key.toLowerCase()=='x') document.getElementById('toggleView').click(); 
-		// In order to behave like FullScreen
-		else if(e.key=='Escape' && isFullWindow) document.getElementById('toggleFullwindow').click(); 
-// 				else if(e.key.toLowerCase()=='c') formAffiche=!formAffiche; 
-// 				document.getElementById('form').style.opacity = formAffiche?1:0 ; 
-// 		else alert(e.key)
+		var arrowMove=10;
+		if(e.ctrlKey) change_synchro('a');
+		switch (e.key) {
+			case 'z': case 'Z': document.getElementById('toggleZoom').click(); break;
+			case 'f': case 'F': document.getElementById('toggleFullscreen').click();  break;
+			case 'w': case 'W': document.getElementById('toggleFullwindow').click();  break;
+			case 'x': case 'X': document.getElementById('toggleView').click();  break;
+			case 'r': case 'R': document.getElementById('reset').click(); break;
+// 			case 'c': case 'C': formAffiche=!formAffiche; document.getElementById('form').style.opacity = formAffiche?1:0 ; break;
+			case '+': document.getElementById('buttonZoomIn').click(); break;
+			case '-': document.getElementById('buttonZoomOut').click(); break;
+			case 'ArrowDown':	moveimage(0, arrowMove); moveimage_end(); break;
+			case 'ArrowUp':	moveimage(0, -arrowMove); moveimage_end(); break;
+			case 'ArrowLeft':	moveimage(-arrowMove, 0); moveimage_end(); break;
+			case 'ArrowRight':	moveimage(arrowMove, 0); moveimage_end(); break;
+//			case 'Enter':      break;
+			case 'Escape': if(isFullWindow) document.getElementById('toggleFullwindow').click(); break;
+			case 'Control': change_synchro('a'); break;
+			default: 
+// 				console.log(e.key)
+				return;
+		}
 	}
 	document.onkeyup = function (e){
 		if(e.ctrlKey || (e.key=='Control')) change_synchro('d');
@@ -432,7 +488,7 @@ function initialise_image()
 	
 	
 	var imgOrigUrl = document.getElementById('z_vue_droite').style.backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
-	var sz100Image = new Image();
+	sz100Image = new Image();
 // 			sz100Image.src = imgOrigUrl;
 	sz100Image.load(imgOrigUrl);
 	
@@ -443,18 +499,27 @@ function initialise_image()
 
 			X2 = -this.width*3/4;
 			Y2 = Y1; 
-			moveimage(window.innerWidth/4, window.innerHeight/2);
+			zVal = 0;
+			moveimage(window.innerWidth/4, window.innerHeight/2); moveimage_end();
 		}
 		else {
 		}
 		
+		sz100ImageW=this.width
+		moveimage(0, 0); moveimage_end();
+		zoomimage(0, 0, 0);
 		change_synchro('d');
 	};
 
 }
-function moveimage(dx,dy) 
-{
-
+function moveimage_end() {
+	X1 = x1;
+	Y1 = y1;    
+	X2 = x2;
+	Y2 = y2;    
+	document.cookie = 'stereoZoom_'+pictureId+'_COORDS='+JSON.stringify(new Array(X1, Y1, X2, Y2, zVal))+'; max-age='+cookieMaxAge;
+}
+function moveimage(dx,dy) {
 	x1 = X1 ;
 	y1 = Y1 ;    
 	x2 = X2 ;
@@ -478,15 +543,46 @@ function moveimage(dx,dy)
 			break;
 		}
 	}         
+
 	document.getElementById((isForCrossView)?'z_vue_droite':'z_vue_gauche').style.backgroundPosition = x1+'px '+y1+'px' ;
 	document.getElementById((isForCrossView)?'z_vue_gauche':'z_vue_droite').style.backgroundPosition = x2+'px '+y2+'px' ;  
 }
+function zoomimage(zx, zy, delta) 
+{
+	zValPrev = zVal
+	
+	zVal += delta
+	zStep = Math.pow(zCte, delta)
+	
+	zFactorPrev = Math.pow(zCte, zValPrev)
+	zFactor = Math.pow(zCte, zVal)
+	
+	if (isZoom100) {
+		document.getElementById('toggleZoom').textContent='Z '+Math.round(zFactor*100)+'%'
+// 		document.getElementById('reset').style.visibility = 'hidden'
+	}
+		
+// 	console.log(sz100ImageW, zVal, zFactor, zFactorPrev)
+	s1Prev = (sz100ImageW*zFactorPrev)
+	s1 = (sz100ImageW*zFactor)
+
+	X1 = (zStep*(X1-zx) + zx) ;
+	Y1 = (zStep*(Y1-zy) + zy) ; 
+	X2 = (zStep*(X2-zx + s1Prev/2) + zx) - s1/2;
+	Y2 = (zStep*(Y2-zy) + zy) ; 
+	x1 = X1 ;
+	y1 = Y1 ;    
+	x2 = X2 ;
+	y2 = Y2 ;     
+	document.getElementById((isForCrossView)?'z_vue_droite':'z_vue_gauche').style.backgroundPosition = X1+'px '+Y1+'px' ;	document.getElementById((isForCrossView)?'z_vue_gauche':'z_vue_droite').style.backgroundPosition = X2+'px '+Y2+'px' ;
+	
+	document.getElementById('z_vue_droite').style.backgroundSize = 	document.getElementById('z_vue_gauche').style.backgroundSize = s1+'px' ;
+	
+
+}
 function change_synchro(val)
 {
-	X1 = x1;
-	Y1 = y1;    
-	X2 = x2;
-	Y2 = y2;     
+	moveimage_end()    
 	Xd = Xm;
 	Yd = Ym;     
 	obj = document.getElementById('toggleDA')
@@ -503,9 +599,12 @@ function change_synchro(val)
 		}
 	}
 }
-function charge_image()
+function sz100Image_load()
 {
 	uri = encodeURI(imgOrigPath) ;
+	document.getElementById('z_vue_droite').style.backgroundImage = 'url('+uri+')' ;
+	document.getElementById('z_vue_gauche').style.backgroundImage = 'url('+uri+')' ;
+	
 	COORDS=document.cookie.replace(new RegExp('(?:(?:^|.*;\\s*)stereoZoom_'+pictureId+'_COORDS\\s*\\=\\s*([^;]*).*$)|^.*$', 'g'), '$1')
 	if( COORDS == '') {
 	}
@@ -515,9 +614,30 @@ function charge_image()
 		Y1=COORDS[1]
 		X2=COORDS[2]
 		Y2=COORDS[3]
-		moveimage(0, 0);
+		zVal=(COORDS[4])?COORDS[4]:0
 	}
-	document.getElementById('z_vue_droite').style.backgroundImage = 'url('+uri+')' ;
-	document.getElementById('z_vue_gauche').style.backgroundImage = 'url('+uri+')' ;
-	initialise_image() ;
+	
+	sz100Image_init() ;
 }
+function szDisplayChangeBefore() {
+	if(sz100ImageW) {
+		myView = document.getElementById('z_vue_gauche')
+		szDisplayW = myView.offsetWidth;
+		szDisplayH = myView.offsetHeight;
+// 		console.log('a', isFullScreen, isFullWindow, szDisplayW, szDisplayH)
+	}
+}
+function szDisplayChangeAfter() {
+	if(sz100ImageW) {
+		myView = document.getElementById('z_vue_gauche')
+		widthDelta = myView.offsetWidth - szDisplayW;
+		heightDelta = myView.offsetHeight - szDisplayH;
+		console.log('b', isFullScreen, isFullWindow, widthDelta, heightDelta)
+		moveimage(widthDelta/2, heightDelta/2); moveimage_end();
+	}
+}
+function roundPrecision(number, precision) {
+  var factor = Math.pow(10, precision);
+  return Math.round(number * factor) / factor;
+}
+

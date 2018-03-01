@@ -18,6 +18,9 @@ $lang['Save Settings'] = 'Enregistrer les paramétrages';
 
 // picture_sz100.tpl
 $lang['Zoom 100% / Zoom Fit&#013;[Z] key'] = 'Zoom 100% / Zoom Fit&#013;touche [Z]';
+$lang['Zoom +&#013;[+] key'] = 'Zoom +&#013;touche [+]';
+$lang['Zoom −&#013;[−] key'] = 'Zoom −&#013;touche [−]';
+$lang['Reset&#013;[R] key'] = 'Réinitialiser&#013;touche [R]';
 $lang['Full screen&#013;[F] key'] = 'Plein écran&#013;touche [F]';
 $lang['Full window&#013;[W] key'] = 'Pleine fenêtre&#013;touche [W]';
 $lang['Switch right and left views&#013;[X] key'] = 'Inversion vues gauche et droite&#013;touche [X]';

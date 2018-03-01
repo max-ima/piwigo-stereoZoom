@@ -1,9 +1,13 @@
 
 Changes from v1.1.0 to v1.2.0
-- better zoom switch within fullscreen and fullwindow
-- 100% zoomed stereogram scrolled positions stored in cookie
-- full window mode for mobile (reverted thanks back button)
-- preventdefault for touchmove
+- Better switch within fullscreen and fullwindow
+- Full window mode for mobile (can be reverted thanks back button)
+- Wheel zoom on full resolution stereogram (Z 100%, 123%,  82%, whatever you want)
+- 100% zoomed stereogram scrolled positions and zoom value stored in cookie
+- Add reset button to center image and reset zoom to 100%
+- Add +/- buttons to monitor zoom on mobile
+Bugs
+- Preventdefault for touchmove (image moving does not mix anymore with page moving)
 
 Changes from v1.0.0 to v1.1.0
 - Add a config field to specify your stereograms are either for parallel or for cross view 
