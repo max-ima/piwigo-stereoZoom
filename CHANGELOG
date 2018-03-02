@@ -3,7 +3,7 @@ Changes from v1.1.0 to v1.2.0
 - Better switch within fullscreen and fullwindow
 - Full window mode for mobile (can be reverted thanks back button)
 - Wheel zoom on full resolution stereogram (Z 100%, 123%,  82%, whatever you want)
-- 100% zoomed stereogram scrolled positions and zoom value stored in cookie
+- 100% zoomed stereogram scrolled positions and zoom value stored in cookie for 7 days
 - Add reset button to center image and reset zoom to 100%
 - Add +/− buttons to monitor zoom on mobile
 Solved Bug
