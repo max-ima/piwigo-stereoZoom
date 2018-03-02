@@ -1,4 +1,8 @@
 
+Changes from v1.2.0 to v1.2.1
+- Improved keyboard navigation Ctrl + (Home|End|PageUp|PageDown|ArrowUp) = 'up' link
+- Addendum to home page en_UK, fr_FR
+
 Changes from v1.1.0 to v1.2.0
 - Better switch within fullscreen and fullwindow
 - Full window mode for mobile (can be reverted thanks back button)

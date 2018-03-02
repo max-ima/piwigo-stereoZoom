@@ -454,33 +454,89 @@ function sz100Image_init()
 		zoomimage(evtX, evtY, -evt.deltaY)
 	};
 	document.onkeydown = function (e){
-		var arrowMove=10;
-		if(e.ctrlKey) change_synchro('a');
-		switch (e.key) {
-			case 'z': case 'Z': document.getElementById('toggleZoom').click(); break;
-			case 'f': case 'F': document.getElementById('toggleFullscreen').click();  break;
-			case 'w': case 'W': document.getElementById('toggleFullwindow').click();  break;
-			case 'x': case 'X': document.getElementById('toggleView').click();  break;
-			case 'r': case 'R': document.getElementById('reset').click(); break;
-// 			case 'c': case 'C': formAffiche=!formAffiche; document.getElementById('form').style.opacity = formAffiche?1:0 ; break;
-			case '+': document.getElementById('buttonZoomIn').click(); break;
-			case '-': document.getElementById('buttonZoomOut').click(); break;
-			case 'ArrowDown':	moveimage(0, -arrowMove); moveimage_end(); break;
-			case 'ArrowUp':	moveimage(0, arrowMove); moveimage_end(); break;
-			case 'ArrowLeft':	moveimage(arrowMove, 0); moveimage_end(); break;
-			case 'ArrowRight':	moveimage(-arrowMove, 0); moveimage_end(); break;
-			case 'Home':	document.querySelector('a[rel="prev"]').click(); break;
-			case 'End':	document.querySelector('a[rel="next"]').click(); break;
-//			case 'Enter':      break;
-			case 'Escape': if(isFullWindow) document.getElementById('toggleFullwindow').click(); break;
-			case 'Control': change_synchro('a'); break;
-			default: 
-// 				alert(e.key)
-				return;
+		const keyName = e.key;
+
+		if (keyName === 'Control') {
+			// do when only Control key is pressed.
+// 			alert('Only Control key pressed');
+			change_synchro('a');
+			return;
+		}
+
+		if (e.ctrlKey) {
+			// Even though e.key is not 'Control' (i.e. 'a' is pressed),
+			// e.ctrlKey may be true if Ctrl key is pressed at the time.
+// 			alert(`Combination of ctrlKey + ${keyName}`);
+		} else {
+// 			alert(`Key pressed ${keyName}`);
+		
+			var arrowMove=10;
+			switch (keyName) {
+				case '+': document.getElementById('buttonZoomIn').click(); break;
+				case '-': document.getElementById('buttonZoomOut').click(); break;
+				case 'ArrowDown':	moveimage(0, -arrowMove); moveimage_end(); break;
+				case 'ArrowUp':	moveimage(0, arrowMove); moveimage_end(); break;
+				case 'ArrowLeft':	moveimage(arrowMove, 0); moveimage_end(); break;
+				case 'ArrowRight':	moveimage(-arrowMove, 0); moveimage_end(); break;
+			}
 		}
 	}
 	document.onkeyup = function (e){
-		if(e.ctrlKey || (e.key=='Control')) change_synchro('d');
+		const keyName = e.key;
+
+		if (keyName === 'Control') {
+			// do when only Control key is released.
+// 			alert('Only Control key released');
+			change_synchro('d');
+			return;
+		}
+
+		if (e.ctrlKey) {
+			// Even though e.key is not 'Control' (i.e. 'a' is released),
+			// e.ctrlKey may be true if Ctrl key is released at the time.
+// 			alert(`Combination of ctrlKey + ${keyName}`);
+			switch (keyName) {
+				case 'Home':
+				case 'End':
+				case 'PageUp':
+				case 'PageDown':	
+				case 'ArrowUp':	
+					window.location = document.head.querySelector('link[rel="up"]').href; 
+					break;
+			}
+		} else {
+// 			alert(`Key released ${keyName}`);
+		
+			switch (keyName) {
+				case 'z': case 'Z': document.getElementById('toggleZoom').click(); break;
+				case 'f': case 'F': document.getElementById('toggleFullscreen').click();  break;
+				case 'w': case 'W': document.getElementById('toggleFullwindow').click();  break;
+				case 'x': case 'X': document.getElementById('toggleView').click();  break;
+				case 'r': case 'R': document.getElementById('reset').click(); break;
+	// 			case 'c': case 'C': formAffiche=!formAffiche; document.getElementById('form').style.opacity = formAffiche?1:0 ; break;
+				case 'Home':	window.location = document.head.querySelector('link[rel="first"]').href;
+					break;
+				case 'End':	window.location = document.head.querySelector('link[rel="last"]').href; break;
+				case 'PageUp':	
+					// document.querySelector('a[rel="prev"]').click(); 
+					window.location = document.head.querySelector('link[rel="prev"]').href; 
+					break;
+				case 'PageDown':	window.location = document.head.querySelector('link[rel="next"]').href; break;
+	//			case 'Enter':      break;
+				case 'Escape': 
+					if(isFullWindow) { 
+						document.getElementById('toggleFullwindow').click();
+					}
+					else {
+						window.location = document.head.querySelector('link[rel="up"]').href; 
+					}
+					break;
+	// 			case 'Control': change_synchro('d'); break;
+				default: 
+	// 				alert(e.key)
+					return;
+			}
+		}
 	}
 	document.getElementById('toggleDA').onclick = function() {
 		obj = document.getElementById('toggleDA')
