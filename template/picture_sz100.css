@@ -14,6 +14,6 @@
 #vue_droite, #vue_gauche{ flex: auto; cursor: pointer,hand; }
 
 
-#z_yeux { background: url('patience.png') -550px 0px; display: flex; height:100%;}
+#z_yeux { display: flex; height:100%;}
 #z_vue_droite, #z_vue_gauche{ flex: auto; cursor: grab; background-repeat: no-repeat;}
-#z_vue_droite, #z_vue_gauche{ font-size: 10vw; line-height: 100vh;}
+#z_vue_droite, #z_vue_gauche{ font-size: 2vh; line-height: 10vh;}

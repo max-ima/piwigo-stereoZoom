@@ -287,10 +287,12 @@ window.onload = function(){
 
 Image.prototype.load = function(url){
 	var thisImg = this;
+	var strBar='          ' // 10 caractères
 	var SIimg = setInterval(function() {
-
-		document.getElementById('z_vue_droite').textContent=thisImg.completedPercentage+' %  '
-		document.getElementById('z_vue_gauche').textContent='  '+thisImg.completedPercentage+' %'
+		var spaceUp=strBar.slice(20-Math.round(thisImg.completedPercentage/5)).replace(' ', '&#x202F;'); // de 0 à 0, puis à 10
+		var spaceDown=strBar.slice(Math.round(thisImg.completedPercentage/5)).replace(' ', '&#x202F;'); // de 10 à 0, puis à 0
+		document.getElementById('z_vue_droite').innerHTML='Please wait'+'<br />'+spaceDown+thisImg.completedPercentage+' %'+spaceUp
+		document.getElementById('z_vue_gauche').innerHTML='Please wait'+'<br />'+spaceUp+thisImg.completedPercentage+' %'+spaceDown
 	}, 40);
 	var xmlHTTP = new XMLHttpRequest();
 	xmlHTTP.open('GET', url,true);
@@ -299,8 +301,8 @@ Image.prototype.load = function(url){
 		var blob = new Blob([this.response]);
 		thisImg.src = window.URL.createObjectURL(blob);
 		clearInterval(SIimg);
-		document.getElementById('z_vue_droite').textContent=''
-		document.getElementById('z_vue_gauche').textContent=''
+		document.getElementById('z_vue_droite').innerHTML='Please wait'+'<br />'+'Downloaded'
+		document.getElementById('z_vue_gauche').innerHTML='Please wait'+'<br />'+'D&#x202F;o&#x202F;w&#x202F;n&#x202F;l&#x202F;o&#x202F;a&#x202F;d&#x202F;e&#x202F;d'
 	};
 	xmlHTTP.onprogress = function(e) {
 		thisImg.completedPercentage = parseInt((e.loaded / e.total) * 100);
@@ -546,6 +548,8 @@ function sz100Image_init()
 	sz100Image.load(imgOrigUrl);
 	
 	sz100Image.onload = function () {
+		document.getElementById('z_vue_droite').innerHTML=''
+		document.getElementById('z_vue_gauche').innerHTML=''
 		if( COORDS == '') {
 			X1 = -this.width/4;
 			Y1 = -this.height/2;    

@@ -1,7 +1,14 @@
 <?php
 
 $lang['StereoZoom'] = 'Stéréo Zoom';
+
+// home
 $lang['What StereoZoom can do for me?'] = 'À quoi va me servir Stéréo Zoom ?';
+
+
+// help.tpl
+$lang['Keyboard usage and shortcuts'] = 'Touches clavier et raccourcis';
+
 
 // config.tpl
 $lang['How to detect stereogram picture?'] = 'Comment détecter les stéréogrammes ?';
@@ -15,6 +22,7 @@ $lang['Stereogram view type'] = 'Type de vision des stéréogrammes';
 $lang['Cross view'] = 'Vision croisée';
 $lang['Parallel view'] = 'Vision parallèle';
 $lang['Save Settings'] = 'Enregistrer les paramétrages';
+
 
 // picture_sz100.tpl
 $lang['Zoom 100% / Zoom Fit&#013;[Z] key'] = 'Zoom 100% / Zoom Fit&#013;touche [Z]';

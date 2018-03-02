@@ -21,6 +21,7 @@ if ($page['tab'] != 'photo')
   $tabsheet->set_id('stereoZoom');
 
   $tabsheet->add('home', l10n('Welcome'), STEREOZOOM_ADMIN . '-home');
+  $tabsheet->add('help', l10n('Help'), STEREOZOOM_ADMIN . '-help');
   $tabsheet->add('config', l10n('Configuration'), STEREOZOOM_ADMIN . '-config');
   $tabsheet->select($page['tab']);
   $tabsheet->assign();
