@@ -462,23 +462,15 @@ function sz100Image_init()
 			change_synchro('a');
 			return;
 		}
-
-		if (e.ctrlKey) {
-			// Even though e.key is not 'Control' (i.e. 'a' is pressed),
-			// e.ctrlKey may be true if Ctrl key is pressed at the time.
-// 			alert(`Combination of ctrlKey + ${keyName}`);
-		} else {
-// 			alert(`Key pressed ${keyName}`);
 		
-			var arrowMove=10;
-			switch (keyName) {
-				case '+': document.getElementById('buttonZoomIn').click(); break;
-				case '-': document.getElementById('buttonZoomOut').click(); break;
-				case 'ArrowDown':	moveimage(0, -arrowMove); moveimage_end(); break;
-				case 'ArrowUp':	moveimage(0, arrowMove); moveimage_end(); break;
-				case 'ArrowLeft':	moveimage(arrowMove, 0); moveimage_end(); break;
-				case 'ArrowRight':	moveimage(-arrowMove, 0); moveimage_end(); break;
-			}
+		var arrowMove=10;
+		switch (keyName) {
+			case '+': document.getElementById('buttonZoomIn').click(); break;
+			case '-': document.getElementById('buttonZoomOut').click(); break;
+			case 'ArrowDown':	moveimage(0, -arrowMove); moveimage_end(); break;
+			case 'ArrowUp':	moveimage(0, arrowMove); moveimage_end(); break;
+			case 'ArrowLeft':	moveimage(arrowMove, 0); moveimage_end(); break;
+			case 'ArrowRight':	moveimage(-arrowMove, 0); moveimage_end(); break;
 		}
 	}
 	document.onkeyup = function (e){
@@ -499,8 +491,7 @@ function sz100Image_init()
 				case 'Home':
 				case 'End':
 				case 'PageUp':
-				case 'PageDown':	
-				case 'ArrowUp':	
+				case 'PageDown':
 					window.location = document.head.querySelector('link[rel="up"]').href; 
 					break;
 			}
