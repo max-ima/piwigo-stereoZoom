@@ -1,7 +1,9 @@
 
 Changes from v1.2.0 to v1.2.1
-- Improved keyboard navigation Ctrl + (Home|End|PageUp|PageDown|ArrowUp) = 'up' link
+- Improved keyboard navigation Ctrl + (Home|End|PageUp|PageDown) = 'up' link
 - Addendum to home page en_UK, fr_FR
+- stereo download progress info
+- Keyboard use in help page
 
 Changes from v1.1.0 to v1.2.0
 - Better switch within fullscreen and fullwindow
