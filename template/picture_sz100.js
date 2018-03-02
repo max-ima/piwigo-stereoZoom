@@ -117,7 +117,7 @@ window.onload = function(){
 				// les deux modes sont rendus exclusifs l'un de l'autre
 				if (isFullScreen) document.getElementById('toggleFullscreen').click();
 			
-				szDisplayChangeBefore()
+				szEyeChangeBefore()
 				
 				document.querySelector('html').style.overflowY='hidden';
 				szDisplay.style.width = '100vw' ;
@@ -147,7 +147,7 @@ window.onload = function(){
 				}
 			}
 			else {
-				szDisplayChangeBefore()
+				szEyeChangeBefore()
 				
 				document.querySelector('html').style.overflowY='';
 				
@@ -159,14 +159,14 @@ window.onload = function(){
 				szDisplay.style.margin = '' ;
 				szDisplay.style.zIndex = '' ;
 			}
-			szDisplayChangeAfter()
+			szEyeChangeAfter()
 			handleFullDisplay()
 		}
 		return false
 	}
 	document.getElementById('toggleFullscreen').onclick = function() {
 		elem = szDisplay
-		szDisplayChangeBefore()
+		szEyeChangeBefore()
 		if (isFullScreen) {
 			if (document.exitFullscreen) {
 				document.exitFullscreen();
@@ -213,7 +213,7 @@ window.onload = function(){
 		return false
 	}
 	document.onwebkitfullscreenchange = document.onmozfullscreenchange = document.onfullscreenchange = function( event ) {
-		szDisplayChangeAfter()
+		szEyeChangeAfter()
 		
 		isFullScreen=!isFullScreen
 		if (isFullScreen) {
@@ -266,6 +266,10 @@ window.onload = function(){
 	if(typeof isFullWindow === 'undefined' || hasTouchscreen) isFullWindow = isFullWindow_default
 	isFullWindow=!isFullWindow
 	document.getElementById('toggleFullwindow').click()
+	
+	szEye = document.getElementById('z_vue_gauche')
+	szEyeW = szEye.offsetWidth;
+	szEyeH = szEye.offsetHeight;
 	
 	szFitImage_load();
 	sz100Image_load();
@@ -339,7 +343,6 @@ function szFitImage_load()
 // Gestion du plein écran, et pleine fenêtre
 // (pour szFitBox) - centrage ou barre de défilement
 function handleFullDisplay() {
-	szDisplayChangeBefore()
 	if (!isZoom100) {
 		if (isFullScreen || isFullWindow) {
 			if (szFitImage.src!='' && szFitImage.complete && (szFitImage.width/szFitImage.height > window.innerWidth/window.innerHeight)) {
@@ -361,18 +364,19 @@ function handleFullDisplay() {
 			
 			szFitBox.style.marginTop='auto';
 			szFitBox.style.transform='none';
-			szDisplay.style.height='auto';
+			szDisplay.style.height='80vh';
 		}
 	}
 	else {
+		szEyeChangeBefore()
 		if (isFullScreen || isFullWindow) {
 			szDisplay.style.height='100vh';
 		}
 		else {
 			szDisplay.style.height='80vh';
 		}
+		szEyeChangeAfter()
 	}
-	szDisplayChangeAfter()
 }
 
 
@@ -380,8 +384,8 @@ function handleFullDisplay() {
 	
 var sz100Image;
 var sz100ImageW;
-var szDisplayW
-var szDisplayH;
+var szEyeW
+var szEyeH;
 var SI1, SI2;
 var x, y ;
 var etat = 1 ;
@@ -393,8 +397,9 @@ var onDblTouch_end_time ;
 var STdblTouch
 
 var Xd, Yd, Xm, Ym; // mouse down, move position
-var x1, y1, x2, y2; // img dynamic
-var X1, Y1, X2, Y2; // img static
+var x1, y1, x2, y2; // bgimg dynamic css position
+var X1, Y1, X2, Y2; // bgimg static css position
+var c1x,c1y,c2x,c2y; // bgimg static center coordinate
 
 X1 = X2 = -0 ;
 Y1 = Y2 = -0 ; 
@@ -460,15 +465,17 @@ function sz100Image_init()
 // 			case 'c': case 'C': formAffiche=!formAffiche; document.getElementById('form').style.opacity = formAffiche?1:0 ; break;
 			case '+': document.getElementById('buttonZoomIn').click(); break;
 			case '-': document.getElementById('buttonZoomOut').click(); break;
-			case 'ArrowDown':	moveimage(0, arrowMove); moveimage_end(); break;
-			case 'ArrowUp':	moveimage(0, -arrowMove); moveimage_end(); break;
-			case 'ArrowLeft':	moveimage(-arrowMove, 0); moveimage_end(); break;
-			case 'ArrowRight':	moveimage(arrowMove, 0); moveimage_end(); break;
+			case 'ArrowDown':	moveimage(0, -arrowMove); moveimage_end(); break;
+			case 'ArrowUp':	moveimage(0, arrowMove); moveimage_end(); break;
+			case 'ArrowLeft':	moveimage(arrowMove, 0); moveimage_end(); break;
+			case 'ArrowRight':	moveimage(-arrowMove, 0); moveimage_end(); break;
+			case 'Home':	document.querySelector('a[rel="prev"]').click(); break;
+			case 'End':	document.querySelector('a[rel="next"]').click(); break;
 //			case 'Enter':      break;
 			case 'Escape': if(isFullWindow) document.getElementById('toggleFullwindow').click(); break;
 			case 'Control': change_synchro('a'); break;
 			default: 
-// 				console.log(e.key)
+// 				alert(e.key)
 				return;
 		}
 	}
@@ -485,8 +492,7 @@ function sz100Image_init()
 		}
 		return false
 	}
-	
-	
+		
 	var imgOrigUrl = document.getElementById('z_vue_droite').style.backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2').split(',')[0];
 	sz100Image = new Image();
 // 			sz100Image.src = imgOrigUrl;
@@ -500,24 +506,32 @@ function sz100Image_init()
 			X2 = -this.width*3/4;
 			Y2 = Y1; 
 			zVal = 0;
-			moveimage(window.innerWidth/4, window.innerHeight/2); moveimage_end();
+			
+// 			moveimage(window.innerWidth/4, window.innerHeight/2); moveimage_end();
+			moveimage(szEyeW/2, szEyeH/2); moveimage_end();
 		}
 		else {
 		}
 		
 		sz100ImageW=this.width
-		moveimage(0, 0); moveimage_end();
+		
+		
 		zoomimage(0, 0, 0);
 		change_synchro('d');
 	};
-
 }
 function moveimage_end() {
 	X1 = x1;
 	Y1 = y1;    
 	X2 = x2;
-	Y2 = y2;    
-	document.cookie = 'stereoZoom_'+pictureId+'_COORDS='+JSON.stringify(new Array(X1, Y1, X2, Y2, zVal))+'; max-age='+cookieMaxAge;
+	Y2 = y2;
+		
+	c1x = szEyeW/2 - X1
+	c1y = szEyeH/2 - Y1
+	c2x = szEyeW/2 - X2
+	c2y = szEyeH/2 - Y2 
+	
+	document.cookie = 'stereoZoom_'+pictureId+'_COORDS='+JSON.stringify(new Array(c1x, c1y, c2x, c2y, zVal))+'; max-age='+cookieMaxAge;
 }
 function moveimage(dx,dy) {
 	x1 = X1 ;
@@ -610,29 +624,46 @@ function sz100Image_load()
 	}
 	else {
 		COORDS=JSON.parse(COORDS)
-		X1=COORDS[0]
-		Y1=COORDS[1]
-		X2=COORDS[2]
-		Y2=COORDS[3]
-		zVal=(COORDS[4])?COORDS[4]:0
+		if (COORDS[0] === null) {
+			COORDS=''
+			
+			c1x=0
+			c1y=0
+			c2x=0
+			c2y=0
+			zVal=0
+		}
+		else {
+			c1x=COORDS[0]
+			c1y=COORDS[1]
+			c2x=COORDS[2]
+			c2y=COORDS[3]
+			zVal=(COORDS[4])?COORDS[4]:0
+		}
+		X1 = szEyeW/2 - c1x 
+		Y1 = szEyeH/2 - c1y
+		X2 = szEyeW/2 - c2x
+		Y2 = szEyeH/2 - c2y
+		
+		moveimage(0, 0); moveimage_end();
 	}
 	
 	sz100Image_init() ;
 }
-function szDisplayChangeBefore() {
+function szEyeChangeBefore() {
 	if(sz100ImageW) {
-		myView = document.getElementById('z_vue_gauche')
-		szDisplayW = myView.offsetWidth;
-		szDisplayH = myView.offsetHeight;
-// 		console.log('a', isFullScreen, isFullWindow, szDisplayW, szDisplayH)
+		szEye = document.getElementById('z_vue_gauche')
+		szEyeW = szEye.offsetWidth;
+		szEyeH = szEye.offsetHeight;
+		console.log('a', isFullScreen, isFullWindow, szEyeW, szEyeH)
 	}
 }
-function szDisplayChangeAfter() {
+function szEyeChangeAfter() {
 	if(sz100ImageW) {
-		myView = document.getElementById('z_vue_gauche')
-		widthDelta = myView.offsetWidth - szDisplayW;
-		heightDelta = myView.offsetHeight - szDisplayH;
-// 		console.log('b', isFullScreen, isFullWindow, widthDelta, heightDelta)
+		szEye = document.getElementById('z_vue_gauche')
+		widthDelta = szEye.offsetWidth - szEyeW;
+		heightDelta = szEye.offsetHeight - szEyeH;
+		console.log('b', isFullScreen, isFullWindow, widthDelta, heightDelta)
 		moveimage(widthDelta/2, heightDelta/2); moveimage_end();
 	}
 }
