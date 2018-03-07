@@ -35,6 +35,7 @@ var langMoveBoth='{'Move'|translate}';
 var langMoveAdjust='{'Adjust'|translate}';
 var langZoomFit='{'Z Fit'|translate}';
 var langZoom100='{'Z 100%'|translate}';
+var langWait='{'Please wait'|translate}';
 </script>
 
 

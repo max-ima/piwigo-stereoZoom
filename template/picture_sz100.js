@@ -304,8 +304,8 @@ Image.prototype.load = function(url){
 	var SIimg = setInterval(function() {
 		var spaceUp=strBar.slice(20-Math.round(thisImg.completedPercentage/5)).replace(' ', '&#x202F;'); // de 0 à 0, puis à 10
 		var spaceDown=strBar.slice(Math.round(thisImg.completedPercentage/5)).replace(' ', '&#x202F;'); // de 10 à 0, puis à 0
-		document.getElementById('z_vue_droite').innerHTML='Please wait'+'<br />'+spaceDown+thisImg.completedPercentage+' %'+spaceUp
-		document.getElementById('z_vue_gauche').innerHTML='Please wait'+'<br />'+spaceUp+thisImg.completedPercentage+' %'+spaceDown
+		document.getElementById('z_vue_droite').innerHTML=langWait+'<br />'+spaceDown+thisImg.completedPercentage+' %'+spaceUp
+		document.getElementById('z_vue_gauche').innerHTML=langWait+'<br />'+spaceUp+thisImg.completedPercentage+' %'+spaceDown
 	}, 40);
 	var xmlHTTP = new XMLHttpRequest();
 	xmlHTTP.open('GET', url,true);

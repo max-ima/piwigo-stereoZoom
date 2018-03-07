@@ -44,5 +44,6 @@ $lang['Z Fit'] = 'Z adapté';
 $lang['Z 100%'] = 'Z 100%';
 $lang['Move'] = 'Déplacement';
 $lang['Adjust'] = 'Ajustement';
+$lang['Please wait'] = 'Patientez s\\\'il vous plaît';
 
 // $lang[''] = '';
