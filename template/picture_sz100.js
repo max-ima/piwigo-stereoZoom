@@ -55,7 +55,7 @@ window.onload = function(){
 			moveMode.style.visibility = 
 			document.getElementById('buttonZoomIn').style.visibility =
 			document.getElementById('buttonZoomOut').style.visibility = document.getElementById('reset').style.visibility = 'visible'
-			obj.textContent='Z '+Math.round(zFactor*100)+'%'
+			obj.textContent=langZoom100.replace('100', Math.round(zFactor*100))
 			
 		}
 		else {
@@ -64,7 +64,7 @@ window.onload = function(){
 			document.getElementById('buttonZoomIn').style.visibility =
 			document.getElementById('buttonZoomOut').style.visibility =
 			document.getElementById('reset').style.visibility = 'hidden'
-			obj.textContent='Z Fit'
+			obj.textContent=langZoomFit
 		}
 		handleFullDisplay();
 		return false
@@ -76,12 +76,12 @@ window.onload = function(){
 		
 		obj = document.getElementById('toggleView')
 		if(isCrossView) {
-			obj.textContent='Vision croisée'
+			obj.textContent=langCrossView
 			szFitEyes.insertBefore(document.getElementById('vue_gauche'), null); // met la vue gauche en dernier
 			sz100Box.insertBefore(document.getElementById('z_vue_gauche'), null); // met la vue gauche en dernier
 		}
 		else {
-			obj.textContent='Vision parallèle'
+			obj.textContent=langParallelView
 			szFitEyes.insertBefore(document.getElementById('vue_droite'), null); // met la vue gauche en dernier				
 			sz100Box.insertBefore(document.getElementById('z_vue_droite'), null); // met la vue gauche en dernier
 		}
@@ -105,6 +105,19 @@ window.onload = function(){
 		height=document.getElementById('z_vue_gauche').offsetHeight;
 		zoomimage(width/2, height/2, -3);
 		moveimage_end();
+		return false
+	}
+	document.getElementById('toggleHelp').onclick = function() {
+		helpShown = !helpShown
+		if(helpShown) {
+			var oReq = new XMLHttpRequest();
+			oReq.onload = showHelp;
+			oReq.open('get', '?/sz/help', true);
+			oReq.send(); 
+		}
+		else {
+			closeHelp()
+		}
 		return false
 	}
 	document.getElementById('toggleFullwindow').onclick = function() {
@@ -506,6 +519,7 @@ function sz100Image_init()
 				case 'w': case 'W': document.getElementById('toggleFullwindow').click();  break;
 				case 'x': case 'X': document.getElementById('toggleView').click();  break;
 				case 'r': case 'R': document.getElementById('reset').click(); break;
+				case 'h': case 'H': case '?': document.getElementById('toggleHelp').click(); break;
 	// 			case 'c': case 'C': formAffiche=!formAffiche; document.getElementById('form').style.opacity = formAffiche?1:0 ; break;
 				case 'Home':	window.location = document.head.querySelector('link[rel="first"]').href;
 					break;
@@ -533,7 +547,7 @@ function sz100Image_init()
 	}
 	document.getElementById('toggleDA').onclick = function() {
 		obj = document.getElementById('toggleDA')
-		if(obj.textContent=='Ajustement') {
+		if(obj.textContent==langMoveAdjust) {
 			change_synchro('d');
 		}
 		else {
@@ -654,12 +668,12 @@ function change_synchro(val)
 	switch(val) {
 		case 'd' : {
 			etat=1 ; 
-			obj.textContent='Déplacement'
+			obj.textContent=langMoveBoth
 		break;
 		}
 		case 'a' : {
 			etat=2 ; 
-			obj.textContent='Ajustement'
+			obj.textContent=langMoveAdjust
 		break;
 		}
 	}
@@ -706,7 +720,7 @@ function szEyeChangeBefore() {
 		szEye = document.getElementById('z_vue_gauche')
 		szEyeW = szEye.offsetWidth;
 		szEyeH = szEye.offsetHeight;
-		console.log('a', isFullScreen, isFullWindow, szEyeW, szEyeH)
+// 		console.log('a', isFullScreen, isFullWindow, szEyeW, szEyeH)
 	}
 }
 function szEyeChangeAfter() {
@@ -714,7 +728,7 @@ function szEyeChangeAfter() {
 		szEye = document.getElementById('z_vue_gauche')
 		widthDelta = szEye.offsetWidth - szEyeW;
 		heightDelta = szEye.offsetHeight - szEyeH;
-		console.log('b', isFullScreen, isFullWindow, widthDelta, heightDelta)
+// 		console.log('b', isFullScreen, isFullWindow, widthDelta, heightDelta)
 		moveimage(widthDelta/2, heightDelta/2); moveimage_end();
 	}
 }
@@ -723,3 +737,22 @@ function roundPrecision(number, precision) {
   return Math.round(number * factor) / factor;
 }
 
+// var szHelpNode
+var helpShown = false
+function showHelp () {
+// 	if ( !szHelpNode ) {
+		var szHelpNode = document.createElement('div'); 
+		var a = document.createAttribute('id');
+		a.value = 'szHelpDiv';
+		szHelpNode.setAttributeNode(a);
+		szHelpNode.innerHTML = this.responseText;
+// 	}
+	var currentDiv = document.getElementById('szDisplay'); 
+	currentDiv.parentNode.insertBefore(szHelpNode, currentDiv); 
+	
+// 	szHidden.appendChild(szDisplay.replaceChild(szHelpNode, szDisplay.firstChild));
+}
+function closeHelp () {
+	var szHelpNode = document.getElementById('szHelpDiv'); 
+	szHelpNode.parentNode.removeChild(szHelpNode)
+}

@@ -59,6 +59,11 @@ $alluser_file = STEREOZOOM_PATH . 'include/events.inc.php';
 add_event_handler('render_element_content', 'stereoZoom_render_element_content', 
 EVENT_HANDLER_PRIORITY_NEUTRAL, $alluser_file);
 
+// loc_end_section_init 	trigger_notify 		include\section_init.inc.php 	this action is called after section initilization, $page variable is fully defined
+add_event_handler('loc_end_section_init', 'stereoZoom_section_init_additional_page', 
+EVENT_HANDLER_PRIORITY_NEUTRAL, $alluser_file);
+
+
 /**
  * plugin initialization
  *   - check for upgrades
@@ -75,3 +80,4 @@ function stereoZoom_init()
   // prepare plugin configuration
   $conf['stereoZoom'] = safe_unserialize($conf['stereoZoom']);
 }
+

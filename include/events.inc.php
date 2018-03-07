@@ -48,3 +48,14 @@ function stereoZoom_render_element_content($content, $picture)
 	return $content .
 		$template->parse( 'stereoZoom_picture', true );
 }
+
+
+// Section init
+function stereoZoom_section_init_additional_page()
+{
+  global $tokens ;
+  
+  if (($tokens[0] == 'sz' and !empty($tokens[1])))
+    include(STEREOZOOM_PATH . 'additional_page.php');
+
+}

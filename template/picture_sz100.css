@@ -17,3 +17,26 @@
 #z_yeux { display: flex; height:100%;}
 #z_vue_droite, #z_vue_gauche{ flex: auto; cursor: grab; background-repeat: no-repeat;}
 #z_vue_droite, #z_vue_gauche{ font-size: 2vh; line-height: 10vh;}
+
+
+/* Help */
+#szHelpDiv {
+	text-align: left;
+	max-height: 50vh;
+	overflow-y: scroll;
+}
+dl dt,
+dl dd {
+	display: block;
+	margin: 1em;
+}
+dl dt {
+	margin-bottom: 0em;
+}
+dl dd {
+	margin-top: 0em;
+	margin-left: 2em;
+}
+dl dt {
+	font-weight: bold;
+}
