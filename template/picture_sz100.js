@@ -139,7 +139,7 @@ window.onload = function(){
 				szDisplay.style.left = '0px' ;
 				szDisplay.style.top = '0px' ;
 				szDisplay.style.margin = '0px' ;
-				szDisplay.style.zIndex = '101' ;
+				szDisplay.style.zIndex = '1021' ;
 				
 				
 				if( window.history && window.history.pushState ){
@@ -255,12 +255,14 @@ window.onload = function(){
 	
 	document.getElementById('vue_droite').ondblclick = 
 	document.getElementById('z_vue_droite').ondblclick = function() {
-		if (elem=document.getElementById('linkPrev') || document.querySelector('div.ui-controlgroup-controls a[rel="prev"]')) elem.click() ;
+// 		if (elem=document.getElementById('linkPrev') || document.querySelector('div.ui-controlgroup-controls a[rel="prev"]')) elem.click() ;
+		window.location = document.head.querySelector('link[rel="prev"]').href
 		return false
 	}
 	document.getElementById('vue_gauche').ondblclick = 
 	document.getElementById('z_vue_gauche').ondblclick = function() {
-		if (elem=document.getElementById('linkNext') || document.querySelector('div.ui-controlgroup-controls a[rel="next"]')) elem.click() ;
+// 		if (elem=document.getElementById('linkNext') || document.querySelector('div.ui-controlgroup-controls a[rel="next"]')) elem.click() ; 
+		window.location = document.head.querySelector('link[rel="next"]').href
 		return false
 	}
 	
