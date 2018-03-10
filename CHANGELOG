@@ -1,8 +1,13 @@
 
+Changes from v1.2.3 to v1.2.4
+- Bug resolved : Cookie size comes to overflow header -> (Bad request. Your browser sent a request that this server could not understand. Size of a request header field exceeds server limit.)
+
+
 Changes from v1.2.2 to v1.2.3
-Related to Bootstrap Darkroom theme
+- Bug resolved : Missing file for help display in all user picture page
+Related to Bootstrap Darkroom theme adaptation
 - Bug resolved : double click for prev or next picture
-- Bug resolved : fullwindow
+- Bug resolved : fullwindow css zIndex
 
 Changes from v1.2.1 to v1.2.2
 - Improved translation

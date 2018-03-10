@@ -44,7 +44,7 @@ window.onload = function(){
 	
 	document.getElementById('toggleZoom').onclick = function() {
 		isZoom100=!isZoom100
-		document.cookie = 'stereoZoom_isZoom100='+isZoom100+'; max-age='+cookieMaxAge;
+		document.cookie = 'sz_isZoom100='+isZoom100+'; max-age='+cookieMaxAge;
 
 		
 		moveMode = document.getElementById('toggleDA').parentNode;
@@ -71,7 +71,7 @@ window.onload = function(){
 	}
 	document.getElementById('toggleView').onclick = function() {
 		isCrossView = !isCrossView
-		document.cookie = 'stereoZoom_isCrossView='+isCrossView+'; max-age='+cookieMaxAge;
+		document.cookie = 'sz_isCrossView='+isCrossView+'; max-age='+cookieMaxAge;
 
 		
 		obj = document.getElementById('toggleView')
@@ -123,7 +123,7 @@ window.onload = function(){
 	document.getElementById('toggleFullwindow').onclick = function() {
 		if (!hasTouchscreen) {
 			isFullWindow=!isFullWindow
-			document.cookie = 'stereoZoom_isFullWindow='+isFullWindow+'; max-age='+cookieMaxAge;
+			document.cookie = 'sz_isFullWindow='+isFullWindow+'; max-age='+cookieMaxAge;
 
 			
 			if(isFullWindow) {
@@ -266,18 +266,18 @@ window.onload = function(){
 		return false
 	}
 	
-	isZoom100=eval(document.cookie.replace(/(?:(?:^|.*;\s*)stereoZoom_isZoom100\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
+	isZoom100=eval(document.cookie.replace(/(?:(?:^|.*;\s*)sz_isZoom100\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
 	if(typeof isZoom100 === 'undefined') isZoom100 = isZoom100_default
 	isZoom100=!isZoom100
 	szDisplay.appendChild(isZoom100?sz100Box:szFitBox)
 	document.getElementById('toggleZoom').click()
 	
-	isCrossView=eval(document.cookie.replace(/(?:(?:^|.*;\s*)stereoZoom_isCrossView\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
+	isCrossView=eval(document.cookie.replace(/(?:(?:^|.*;\s*)sz_isCrossView\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
 	if(typeof isCrossView === 'undefined') isCrossView = isForCrossView
 	isCrossView=!isCrossView
 	document.getElementById('toggleView').click()
 			
-	isFullWindow=eval(document.cookie.replace(/(?:(?:^|.*;\s*)stereoZoom_isFullWindow\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
+	isFullWindow=eval(document.cookie.replace(/(?:(?:^|.*;\s*)sz_isFullWindow\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
 	if(typeof isFullWindow === 'undefined' || hasTouchscreen) isFullWindow = isFullWindow_default
 	isFullWindow=!isFullWindow
 	document.getElementById('toggleFullwindow').click()
@@ -598,7 +598,7 @@ function moveimage_end() {
 	c2x = szEyeW/2 - X2
 	c2y = szEyeH/2 - Y2 
 	
-	document.cookie = 'stereoZoom_'+pictureId+'_COORDS='+JSON.stringify(new Array(c1x, c1y, c2x, c2y, zVal))+'; max-age='+cookieMaxAge;
+	document.cookie = 'sz_'+pictureId+'='+JSON.stringify(new Array(Math.round(c1x), Math.round(c1y), Math.round(c2x), Math.round(c2y), Math.round(zVal))+'; max-age='+cookieMaxAge;
 }
 function moveimage(dx,dy) {
 	x1 = X1 ;
@@ -686,7 +686,7 @@ function sz100Image_load()
 	document.getElementById('z_vue_droite').style.backgroundImage = 'url('+uri+')' ;
 	document.getElementById('z_vue_gauche').style.backgroundImage = 'url('+uri+')' ;
 	
-	COORDS=document.cookie.replace(new RegExp('(?:(?:^|.*;\\s*)stereoZoom_'+pictureId+'_COORDS\\s*\\=\\s*([^;]*).*$)|^.*$', 'g'), '$1')
+	COORDS=document.cookie.replace(new RegExp('(?:(?:^|.*;\\s*)sz_'+pictureId+'\\s*\\=\\s*([^;]*).*$)|^.*$', 'g'), '$1')
 	if( COORDS == '') {
 	}
 	else {
