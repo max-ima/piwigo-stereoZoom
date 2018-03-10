@@ -598,7 +598,7 @@ function moveimage_end() {
 	c2x = szEyeW/2 - X2
 	c2y = szEyeH/2 - Y2 
 	
-	document.cookie = 'sz_'+pictureId+'='+JSON.stringify(new Array(Math.round(c1x), Math.round(c1y), Math.round(c2x), Math.round(c2y), Math.round(zVal))+'; max-age='+cookieMaxAge;
+	document.cookie = 'sz_'+pictureId+'='+JSON.stringify(new Array(Math.round(c1x), Math.round(c1y), Math.round(c2x), Math.round(c2y), Math.round(zVal)))+'; max-age='+cookieMaxAge;
 }
 function moveimage(dx,dy) {
 	x1 = X1 ;
