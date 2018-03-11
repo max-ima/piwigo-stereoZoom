@@ -1,6 +1,8 @@
 
 Changes from v1.2.3 to v1.2.4
 - Bug resolved : Cookie size comes to overflow header -> (Bad request. Your browser sent a request that this server could not understand. Size of a request header field exceeds server limit.)
+- Help=F1=?=h
+- Help useful links + css
 
 
 Changes from v1.2.2 to v1.2.3
