@@ -521,7 +521,7 @@ function sz100Image_init()
 				case 'w': case 'W': document.getElementById('toggleFullwindow').click();  break;
 				case 'x': case 'X': document.getElementById('toggleView').click();  break;
 				case 'r': case 'R': document.getElementById('reset').click(); break;
-				case 'h': case 'H': case '?': document.getElementById('toggleHelp').click(); break;
+				case 'h': case 'H': case '?': case 'F1': document.getElementById('toggleHelp').click(); break;
 	// 			case 'c': case 'C': formAffiche=!formAffiche; document.getElementById('form').style.opacity = formAffiche?1:0 ; break;
 				case 'Home':	window.location = document.head.querySelector('link[rel="first"]').href;
 					break;
@@ -542,7 +542,7 @@ function sz100Image_init()
 					break;
 	// 			case 'Control': change_synchro('d'); break;
 				default: 
-	// 				alert(e.key)
+// 	 				alert(e.key)
 					return;
 			}
 		}
