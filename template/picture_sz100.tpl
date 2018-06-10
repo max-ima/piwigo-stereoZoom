@@ -10,7 +10,7 @@
 </pre>
 <ul id="sz100tools">
 <li><a href="#" id="toggleView" title="{'Switch right and left views&#013;[X] key'|translate}" >X</a></li>
-<li><a href="#" id="toggleDA" title="{'Move: both views are displaced with the mouse&#013;Ajust: a single view is displaced with the mouse&#013;[Ctrl] key + mouse'|translate}" >Ctrl</a></li>
+<li><a href="#" id="toggleDA" title="{'Move: both views are displaced with the mouse&#013;Adjust: a single view is displaced with the mouse&#013;[Ctrl] key + mouse'|translate}" >Ctrl</a></li>
 <li><a href="#" id="toggleZoom" title="{'Zoom 100% / Zoom Fit&#013;[Z] key'|translate}" >Z</a>
       <a href="#" id="buttonZoomIn" title="{'Zoom +&#013;[+] key'|translate}" > + </a>
       <a href="#" id="buttonZoomOut" title="{'Zoom −&#013;[−] key'|translate}" > − </a></li>
