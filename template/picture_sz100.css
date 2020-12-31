@@ -1,6 +1,8 @@
 #sz100tools li {display: inline-block; width:11em;}
 /* #sz100tools li::before {content: "   -   ";} */
 /* #sz100tools li:first-child::before {content: "";} */
+#toggleHelp,
+#sz100tools li a {border: solid 1px; padding: 4px 2px 2px 2px; border-radius: 4px;}
 
 #szHidden {display: none;}
 #szDisplay {background:#222;}
@@ -27,18 +29,22 @@
 	padding-left: 1em;
 	padding-right: 1em;
 }
-dl dt,
-dl dd {
+#szHelpDiv dl dt,
+#szHelpDiv dl dd {
 	display: block;
 	margin: 1em;
 }
-dl dt {
+#szHelpDiv dl dt {
 	margin-bottom: 0em;
 }
-dl dd {
+#szHelpDiv dl dd {
 	margin-top: 0em;
 	margin-left: 2em;
 }
-dl dt {
+#szHelpDiv dl dt {
 	font-weight: bold;
+}
+#szHelpDiv dl dt,
+#szHelpDiv dl dd {
+    color: inherit;
 }

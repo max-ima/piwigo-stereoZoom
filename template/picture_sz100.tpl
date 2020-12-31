@@ -12,8 +12,7 @@
 <li><a href="#" id="toggleView" title="{'Switch right and left views&#013;[X] key'|translate}" >X</a></li>
 <li><a href="#" id="toggleDA" title="{'Move: both views are displaced with the mouse&#013;Adjust: a single view is displaced with the mouse&#013;[Ctrl] key + mouse'|translate}" >Ctrl</a></li>
 <li><a href="#" id="toggleZoom" title="{'Zoom 100% / Zoom Fit&#013;[Z] key'|translate}" >Z</a>
-      <a href="#" id="buttonZoomIn" title="{'Zoom +&#013;[+] key'|translate}" > + </a>
-      <a href="#" id="buttonZoomOut" title="{'Zoom −&#013;[−] key'|translate}" > − </a></li>
+      <a href="#" id="buttonZoomIn" title="{'Zoom +&#013;[+] key'|translate}" > + </a> <a href="#" id="buttonZoomOut" title="{'Zoom −&#013;[−] key'|translate}" > − </a></li>
 <li><a href="#" id="reset" title="{'Reset&#013;[R] key'|translate}" > R </a>
       <a href="#" id="toggleFullscreen" title="{'Full screen&#013;[F] key'|translate}" > F </a>
       <a href="#" id="toggleFullwindow" title="{'Full window&#013;[W] key'|translate}" > W </a></li>

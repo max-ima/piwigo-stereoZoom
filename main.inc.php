@@ -1,11 +1,12 @@
 <?php
 /*
 Plugin Name: stereoZoom
-Version: 1.2.4
+Version: 1.2.5
 Description: Manage stereo RL pictures (Gestion des images stéréo DG)
 Plugin URI: http://piwigo.org/ext/extension_view.php?eid=876
 Author: TOnin
 Author URI: https://github.com/7tonin
+Has Settings: true
 */
 
 /**
