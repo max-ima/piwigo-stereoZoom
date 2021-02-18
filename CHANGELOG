@@ -1,3 +1,11 @@
+Changes from v1.2.5 to v1.2.6
+- Reminder for browsing keys Home ↖ ← Arrows → ↘ End
+- Change in keyboard keys mapping - help
+- Change in keyboard keys mapping In order to preserve piwigo main themes default behaviour, affects 12346789 HJKL ↖↘⇞⇟ keys. 
+TODO: 
+- Why does Modus theme behave differently?
+- Add stereo view detection with tag or database field
+
 Changes from v1.2.4 to v1.2.5
 - Compatibility with Piwigo 11.0 + Elegant, Modus and Smart Pocket themes
 - Help text default color
