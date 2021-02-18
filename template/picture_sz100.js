@@ -254,17 +254,9 @@ window.onload = function(){
 // 	}
 	
 	document.getElementById('vue_droite').ondblclick = 
-	document.getElementById('z_vue_droite').ondblclick = function() {
-// 		if (elem=document.getElementById('linkPrev') || document.querySelector('div.ui-controlgroup-controls a[rel="prev"]')) elem.click() ;
-		window.location = document.head.querySelector('link[rel="prev"]').href
-		return false
-	}
+	document.getElementById('z_vue_droite').ondblclick = function() { browseCategory('Prev'); return false }
 	document.getElementById('vue_gauche').ondblclick = 
-	document.getElementById('z_vue_gauche').ondblclick = function() {
-// 		if (elem=document.getElementById('linkNext') || document.querySelector('div.ui-controlgroup-controls a[rel="next"]')) elem.click() ; 
-		window.location = document.head.querySelector('link[rel="next"]').href
-		return false
-	}
+	document.getElementById('z_vue_gauche').ondblclick = function() { browseCategory('Next'); return false }
 	
 	isZoom100=eval(document.cookie.replace(/(?:(?:^|.*;\s*)sz_isZoom100\s*\=\s*([^;]*).*$)|^.*$/, '$1'))
 	if(typeof isZoom100 === 'undefined') isZoom100 = isZoom100_default
@@ -299,7 +291,20 @@ window.onload = function(){
 		}, 40)
 	}
 }
-
+function browseCategory(Direction) {
+    direction = Direction.toLowerCase()
+    switch (Direction) {
+        case 'Next':
+        case 'Prev': 
+        case 'First': 
+        case 'Last': 
+        case 'Up': 
+            if (elem=document.head.querySelector('link[rel="'+direction+'"]') || document.getElementById('link'+Direction) || document.querySelector('div.ui-controlgroup-controls a[rel="'+direction+'"]')) {
+                window.location = elem.href ;
+//                 elem.click() ;
+            }
+    }
+}
 Image.prototype.load = function(url){
 	var thisImg = this;
 	var strBar='          ' // 10 caractères
@@ -478,17 +483,45 @@ function sz100Image_init()
 // 			alert('Only Control key pressed');
 			change_synchro('a');
 			return;
-		}
-		
-		var arrowMove=10;
-		switch (keyName) {
-			case '+': document.getElementById('buttonZoomIn').click(); break;
-			case '-': document.getElementById('buttonZoomOut').click(); break;
-			case 'ArrowDown':	moveimage(0, -arrowMove); moveimage_end(); break;
-			case 'ArrowUp':	moveimage(0, arrowMove); moveimage_end(); break;
-			case 'ArrowLeft':	moveimage(arrowMove, 0); moveimage_end(); break;
-			case 'ArrowRight':	moveimage(-arrowMove, 0); moveimage_end(); break;
-		}
+        }
+        
+        // 
+        var arrowMove=10;
+        switch (keyName) {
+            case '+': document.getElementById('buttonZoomIn').click(); break;
+            case '-': document.getElementById('buttonZoomOut').click(); break;
+//             case 'ArrowDown':	moveimage(0, -arrowMove); moveimage_end(); break;
+//             case 'ArrowUp':	moveimage(0, arrowMove); moveimage_end(); break;
+//             case 'ArrowLeft':	moveimage(arrowMove, 0); moveimage_end(); break;
+//             case 'ArrowRight':	moveimage(-arrowMove, 0); moveimage_end(); break;
+            case 'k':	case '2':	moveimage(0, -arrowMove); moveimage_end(); break;
+            case 'j':	case '8':	moveimage(0, arrowMove); moveimage_end(); break;
+            case 'h':	case '4':	moveimage(arrowMove, 0); moveimage_end(); break;
+            case 'l':	case '6':	moveimage(-arrowMove, 0); moveimage_end(); break;
+            case '1':	moveimage(arrowMove, -arrowMove); moveimage_end(); break;
+            case '9':	moveimage(-arrowMove, arrowMove); moveimage_end(); break;
+            case '3':	moveimage(-arrowMove, -arrowMove); moveimage_end(); break;
+            case '7':	moveimage(arrowMove, arrowMove); moveimage_end(); break;
+            case 'ArrowLeft':	browseCategory('Prev'); break;
+            case 'ArrowRight':	browseCategory('Next'); break;
+        }
+        switch (keyName) {
+            case '+': 
+            case '-': 
+            case 'k':	case '2':
+            case 'j':	case '8':
+            case 'h':	case '4':
+            case 'l':	case '6':
+            case '1':
+            case '9':
+            case '3':
+            case '7':
+            case 'ArrowLeft':
+            case 'ArrowRight':
+                e.preventDefault();
+//         e.stopPropagation();
+        }
+            
 	}
 	document.onkeyup = function (e){
 		const keyName = e.key;
@@ -500,19 +533,30 @@ function sz100Image_init()
 			return;
 		}
 
+// 		console.log(e);
+		//  'ctrlKey', 'shiftKey', 'altKey', 'altGraphKey', 'metaKey'
 		if (e.ctrlKey) {
 			// Even though e.key is not 'Control' (i.e. 'a' is released),
 			// e.ctrlKey may be true if Ctrl key is released at the time.
 // 			alert(`Combination of ctrlKey + ${keyName}`);
-			switch (keyName) {
-				case 'Home':
-				case 'End':
-				case 'PageUp':
-				case 'PageDown':
-					window.location = document.head.querySelector('link[rel="up"]').href; 
-					break;
-			}
-		} else {
+            switch (keyName) {
+                                case 'Home':	browseCategory('First'); break;
+                                case 'End':	browseCategory('Last'); break;
+// 				case 'Home':
+// 				case 'End':
+// 				case 'PageUp':
+// 				case 'PageDown':
+// 					browseCategory('Up'); 
+// 					break;
+            }
+            switch (keyName) {
+                case 'Home':
+                case 'End':
+                    e.preventDefault();
+                    //         e.stopPropagation();
+            }
+		}
+        else {
 // 			alert(`Key released ${keyName}`);
 		
 			switch (keyName) {
@@ -521,23 +565,20 @@ function sz100Image_init()
 				case 'w': case 'W': document.getElementById('toggleFullwindow').click();  break;
 				case 'x': case 'X': document.getElementById('toggleView').click();  break;
 				case 'r': case 'R': document.getElementById('reset').click(); break;
-				case 'h': case 'H': case '?': case 'F1': document.getElementById('toggleHelp').click(); break;
+// 				case 'h': case 'H': 
+                case '?': case 'F1': document.getElementById('toggleHelp').click(); break;
 	// 			case 'c': case 'C': formAffiche=!formAffiche; document.getElementById('form').style.opacity = formAffiche?1:0 ; break;
-				case 'Home':	window.location = document.head.querySelector('link[rel="first"]').href;
-					break;
-				case 'End':	window.location = document.head.querySelector('link[rel="last"]').href; break;
-				case 'PageUp':	
-					// document.querySelector('a[rel="prev"]').click(); 
-					window.location = document.head.querySelector('link[rel="prev"]').href; 
-					break;
-				case 'PageDown':	window.location = document.head.querySelector('link[rel="next"]').href; break;
+//                 case 'Home':	browseCategory('First'); break;
+//                 case 'End':	browseCategory('Last'); break;
+//                 case 'PageUp':	browseCategory('Prev'); break;
+//                 case 'PageDown':	browseCategory('Next'); break;
 	//			case 'Enter':      break;
 				case 'Escape': 
 					if(isFullWindow) { 
 						document.getElementById('toggleFullwindow').click();
 					}
 					else {
-						window.location = document.head.querySelector('link[rel="up"]').href; 
+                        browseCategory('Up'); 
 					}
 					break;
 	// 			case 'Control': change_synchro('d'); break;
