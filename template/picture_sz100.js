@@ -44,7 +44,7 @@ window.onload = function(){
 	
 	document.getElementById('toggleZoom').onclick = function() {
 		isZoom100=!isZoom100
-		document.cookie = 'sz_isZoom100='+isZoom100+'; max-age='+cookieMaxAge;
+		document.cookie = 'sz_isZoom100='+isZoom100+'; max-age='+cookieMaxAge+'; SameSite=Strict' ;
 
 		
 		moveMode = document.getElementById('toggleDA').parentNode;
@@ -71,7 +71,7 @@ window.onload = function(){
 	}
 	document.getElementById('toggleView').onclick = function() {
 		isCrossView = !isCrossView
-		document.cookie = 'sz_isCrossView='+isCrossView+'; max-age='+cookieMaxAge;
+		document.cookie = 'sz_isCrossView='+isCrossView+'; max-age='+cookieMaxAge+'; SameSite=Strict';
 
 		
 		obj = document.getElementById('toggleView')
@@ -123,7 +123,7 @@ window.onload = function(){
 	document.getElementById('toggleFullwindow').onclick = function() {
 		if (!hasTouchscreen) {
 			isFullWindow=!isFullWindow
-			document.cookie = 'sz_isFullWindow='+isFullWindow+'; max-age='+cookieMaxAge;
+			document.cookie = 'sz_isFullWindow='+isFullWindow+'; max-age='+cookieMaxAge+'; SameSite=Strict';
 
 			
 			if(isFullWindow) {
@@ -374,7 +374,7 @@ function handleFullDisplay() {
 				szFitBox.style.transform='translateY(-50%)';
 			}
 			else {
-				szDisplay.style.overflowY='scroll';
+				szDisplay.style.overflowY='hidden';
 				
 				szFitBox.style.marginTop='auto';
 				szFitBox.style.transform='none';
@@ -386,7 +386,7 @@ function handleFullDisplay() {
 			
 			szFitBox.style.marginTop='auto';
 			szFitBox.style.transform='none';
-			szDisplay.style.height='80vh';
+            szDisplay.style.height='auto';
 		}
 	}
 	else {
@@ -395,8 +395,8 @@ function handleFullDisplay() {
 			szDisplay.style.height='100vh';
 		}
 		else {
-			szDisplay.style.height='80vh';
-		}
+            szDisplay.style.height='80vh';
+        }
 		szEyeChangeAfter()
 	}
 }
@@ -557,7 +557,7 @@ function sz100Image_init()
             }
 		}
         else {
-// 			alert(`Key released ${keyName}`);
+// 			console.log(`Key released ${keyName}`);
 		
 			switch (keyName) {
 				case 'z': case 'Z': document.getElementById('toggleZoom').click(); break;
@@ -639,7 +639,7 @@ function moveimage_end() {
 	c2x = szEyeW/2 - X2
 	c2y = szEyeH/2 - Y2 
 	
-	document.cookie = 'sz_'+pictureId+'='+JSON.stringify(new Array(Math.round(c1x), Math.round(c1y), Math.round(c2x), Math.round(c2y), Math.round(zVal)))+'; max-age='+cookieMaxAge;
+	document.cookie = 'sz_'+pictureId+'='+JSON.stringify(new Array(Math.round(c1x), Math.round(c1y), Math.round(c2x), Math.round(c2y), Math.round(zVal)))+'; max-age='+cookieMaxAge+'; SameSite=Strict';
 }
 function moveimage(dx,dy) {
 	x1 = X1 ;
@@ -763,7 +763,9 @@ function szEyeChangeBefore() {
 		szEye = document.getElementById('z_vue_gauche')
 		szEyeW = szEye.offsetWidth;
 		szEyeH = szEye.offsetHeight;
-// 		console.log('a', isFullScreen, isFullWindow, szEyeW, szEyeH)
+//         Attention la présence de la console ancrée dans la fenêtre de navigation crée un décalage. 
+//         Bug pour le développeur seul. Pas de problème avec la console dans une fenêtre séparée.
+// 		console.log('szECB', isFullScreen, isFullWindow, szEyeW, szEyeH)
 	}
 }
 function szEyeChangeAfter() {
@@ -771,7 +773,7 @@ function szEyeChangeAfter() {
 		szEye = document.getElementById('z_vue_gauche')
 		widthDelta = szEye.offsetWidth - szEyeW;
 		heightDelta = szEye.offsetHeight - szEyeH;
-// 		console.log('b', isFullScreen, isFullWindow, widthDelta, heightDelta)
+// 		console.log('szECA', isFullScreen, isFullWindow, widthDelta, heightDelta)
 		moveimage(widthDelta/2, heightDelta/2); moveimage_end();
 	}
 }
