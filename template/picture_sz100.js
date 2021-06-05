@@ -433,6 +433,7 @@ y2 = Y2 ;
 
 var zVal=0;
 var zCte=1.03;
+var zCteWheel=10; // Mouse wheel reduction
 var zStep=1;
 var zFactor=1;
 var zFactorPrev;
@@ -473,7 +474,7 @@ function sz100Image_init()
 		evtX = (evt.clientX || evt.touches[0].pageX) - elInfo.left
 		evtY = (evt.clientY || evt.touches[0].pageY) - elInfo.top
 		
-		zoomimage(evtX, evtY, -evt.deltaY)
+		zoomimage(evtX, evtY, -evt.deltaY/zCteWheel)
 	};
 	document.onkeydown = function (e){
 		const keyName = e.key;
