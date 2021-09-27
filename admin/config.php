@@ -14,6 +14,9 @@ if (isset($_POST['save_config']))
 	if(preg_match('/^(true|false)$/', $_POST['STEREOZOOMPLUGIN_VAR_ISFORCROSSVIEW'])) {
 		$conf['stereoZoom']['isForCrossView'] = $_POST['STEREOZOOMPLUGIN_VAR_ISFORCROSSVIEW'];
 	}
+	if(is_numeric($_POST['STEREOZOOMPLUGIN_VAR_ZCTEWHEEL'])) {
+		$conf['stereoZoom']['zCteWheel'] = 0+$_POST['STEREOZOOMPLUGIN_VAR_ZCTEWHEEL'];
+	}
 
 	conf_update_param('stereoZoom', $conf['stereoZoom']);
 	$page['infos'][] = l10n('Information data registered in database');

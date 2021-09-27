@@ -28,6 +28,7 @@ var pictureId={$pictureId};
 var imgDerivPath='{$current.selected_derivative->get_url()}';
 var imgOrigPath='{$STEREOZOOM_IMG_PATH}';
 var isForCrossView={$stereoZoom.isForCrossView}; 
+var zCteWheel={$stereoZoom.zCteWheel}; 
 var langCrossView='{'Cross view'|translate}';
 var langParallelView='{'Parallel view'|translate}';
 var langMoveBoth='{'Move'|translate}';

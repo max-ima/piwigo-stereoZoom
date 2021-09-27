@@ -48,6 +48,13 @@ jQuery(".showInfo").tipTip({
 	   {'Parallel view'|translate}
     </label>
 </fieldset>
+
+<fieldset>
+	<legend>{'Stereogram zoom'|translate}</legend>
+    <label>{'Mouse wheel zoom strength:'|translate}
+	   <input type="number" name="STEREOZOOMPLUGIN_VAR_ZCTEWHEEL" value="{$stereoZoom.zCteWheel}" min="0.01" step="0.01" placeholder="0.10" id="zCteWheelNumber" />
+    </label>
+</fieldset>
  
 <p class="formButtons"><input type="submit" name="save_config" value="{'Save Settings'|translate}"></p>
 </form> 

@@ -11,6 +11,7 @@ class stereoZoom_maintain extends PluginMaintain
 	private $default_conf = array(
 		'suffix' => '_stereo',
 		'isForCrossView' => 'true',
+		'zCteWheel' => 0.1,
 // 		'tag' => 'stereo', // todo ?
 	);
 
@@ -46,6 +47,11 @@ class stereoZoom_maintain extends PluginMaintain
 			if (empty($old_conf['isForCrossView']))
 			{ // use case: this parameter was added in version 1.1.0
 				$old_conf['isForCrossView'] = $this->default_conf['isForCrossView'];
+			}
+
+			if (empty($old_conf['zCteWheel']))
+			{ // use case: this parameter was added in version 1.2.7
+				$old_conf['zCteWheel'] = $this->default_conf['zCteWheel'];
 			}
 			
 			conf_update_param('stereoZoom', $old_conf, true);

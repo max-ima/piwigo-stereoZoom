@@ -23,3 +23,7 @@ dl dd {
 dl dt {
 	font-weight: bold;
 }
+
+#zCteWheelNumber {
+width: 5em;
+}

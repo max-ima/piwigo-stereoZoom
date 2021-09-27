@@ -12,8 +12,8 @@ $lang['Keyboard usage and shortcuts'] = 'Touches clavier et raccourcis';
 
 // config.tpl
 $lang['How to detect stereogram picture?'] = 'Comment détecter les stéréogrammes ?';
-$lang['Normal picture filename: sample.jpg or 20180101T123059_dscn9876.jpg'] = 'Nom de fichier d\'une image normale : example.jpg ou 20180101T123059_dscn9876.jpg';
-$lang['Stereogram picture filename: sample%s%s%s.jpg or 20180101T123059_dscn9876%s%s%s.jpg'] = 'Nom de fichier d\'une image stéréogramme : example%s%s%s.jpg ou 20180101T123059_dscn9876%s%s%s.jpg';
+$lang['Normal picture filename: sample.jpg or 20180101T123059_dscn9876.jpg'] = 'Nom de fichier d’une image normale : example.jpg ou 20180101T123059_dscn9876.jpg';
+$lang['Stereogram picture filename: sample%s%s%s.jpg or 20180101T123059_dscn9876%s%s%s.jpg'] = 'Nom de fichier d’une image stéréogramme : example%s%s%s.jpg ou 20180101T123059_dscn9876%s%s%s.jpg';
 $lang['Stereogram detection'] = 'Détection de stéréogramme';
 $lang['Define your suffix:'] = 'Définir votre suffixe';
 $lang['for instance: _rl, -lr, stereo, ...'] = 'examples : _dg, -gd, stereo, ...';
@@ -21,6 +21,8 @@ $lang['a possible dash followed by from 2 to 6 characters'] = 'un éventuel tire
 $lang['Stereogram view type'] = 'Type de vision des stéréogrammes';
 $lang['Cross view'] = 'Vision croisée';
 $lang['Parallel view'] = 'Vision parallèle';
+$lang['Stereogram zoom'] = 'Zoom dans le stéréogramme';
+$lang['Mouse wheel zoom strength:'] = 'Pouvoir zoomant de la molette de la souris :';
 $lang['Save Settings'] = 'Enregistrer les paramétrages';
 
 
@@ -44,6 +46,8 @@ $lang['Z Fit'] = 'Z adapté';
 $lang['Z 100%'] = 'Z 100%';
 $lang['Move'] = 'Déplacement';
 $lang['Adjust'] = 'Ajustement';
-$lang['Please wait'] = 'Patientez s\\\'il vous plaît';
+$lang['Please wait'] = 'Patientez s’il vous plaît';
+
+
 
 // $lang[''] = '';
