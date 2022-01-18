@@ -1,0 +1,1 @@
+Prikaz stereogramov jpeg (vzporedno združen par pogledov), navzkrižno ali paralelno oko, globalni pogled ali 100-odstotna povečava, navigacija v povečanem pogledu.
